@@ -42,7 +42,7 @@ namespace ESchoolBot
                             session_id  INTEGER
                         );
 
-                        UPDATE schema SET version=2;
+                        INSERT INTO schema (version) VALUES (1);
                         """;
 
                         command.ExecuteNonQuery();

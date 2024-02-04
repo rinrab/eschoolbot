@@ -33,6 +33,9 @@ namespace ESchoolBot.Tests
 
             // Add user
             databaseClient.InsertUser(123, "amogus_username", "amogus_password", "amogus_session");
+
+            // Upgrade database again
+            _ = new DatabaseClient(databaseAccessor);
         }
     }
 }
