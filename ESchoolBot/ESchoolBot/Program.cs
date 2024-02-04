@@ -37,9 +37,9 @@ namespace ESchoolBot
                     });
                 
                 services.AddHttpClient("eschool_client")
-                    .AddTypedClient<IClient>((httpClient, serviceProvider) =>
+                    .AddTypedClient<IESchoolClient>((httpClient, serviceProvider) =>
                     {
-                        return new Client(httpClient);
+                        return new ESchoolClient(httpClient);
                     });
             });
 

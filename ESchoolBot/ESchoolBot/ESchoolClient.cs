@@ -4,11 +4,11 @@ using System.Text.Json;
 
 namespace ESchoolBot
 {
-    public class Client : IClient
+    public class ESchoolClient : IESchoolClient
     {
         private readonly HttpClient httpClient;
 
-        public Client(HttpClient httpClient)
+        public ESchoolClient(HttpClient httpClient)
         {
             httpClient.DefaultRequestHeaders.Add("Cookie", "site_ver=app");
             httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0");

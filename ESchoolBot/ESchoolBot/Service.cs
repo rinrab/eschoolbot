@@ -13,10 +13,10 @@ namespace ESchoolBot
     {
         private readonly ILogger logger;
         private readonly ITelegramBotClient botClient;
-        private readonly IClient client;
+        private readonly IESchoolClient client;
         private readonly IDatabaseClient databaseClient;
 
-        public Service(ILogger<Service> logger, ITelegramBotClient botClient, IClient client, IDatabaseClient databaseClient)
+        public Service(ILogger<Service> logger, ITelegramBotClient botClient, IESchoolClient client, IDatabaseClient databaseClient)
         {
             this.logger = logger;
             this.botClient = botClient;
