@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Telegram.Bot;
@@ -13,12 +14,14 @@ namespace ESchoolBot
         private readonly ILogger logger;
         private readonly ITelegramBotClient botClient;
         private readonly IClient client;
+        private readonly IDatabaseClient databaseClient;
 
-        public Service(ILogger<Service> logger, ITelegramBotClient botClient, IClient client)
+        public Service(ILogger<Service> logger, ITelegramBotClient botClient, IClient client, IDatabaseClient databaseClient)
         {
             this.logger = logger;
             this.botClient = botClient;
             this.client = client;
+            this.databaseClient = databaseClient;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -99,13 +102,22 @@ namespace ESchoolBot
 
             if (parsed != null)
             {
-                string token = await client.LoginAsync(parsed.Email, parsed.Password, cancellationToken);
+                try
+                {
+                    string token = await client.LoginAsync(parsed.Email, parsed.Password, cancellationToken);
 
-                // databaseClient.NewUser(chatId, parsed.Email, parsed.Password, token);
+                    databaseClient.InsertUser(chatId, parsed.Email, parsed.Password, token);
 
-                await botClient.SendTextMessageAsync(chatId, token,
-                                                     replyMarkup: new ReplyKeyboardRemove(),
-                                                     cancellationToken: cancellationToken);
+                    await botClient.SendTextMessageAsync(chatId, Formatter.PostLogin,
+                                                         replyMarkup: new ReplyKeyboardRemove(),
+                                                         cancellationToken: cancellationToken);
+                }
+                catch (LoginException)
+                {
+                    await botClient.SendTextMessageAsync(chatId, Formatter.IncorrectLoginOrPassword,
+                                                         replyMarkup: CreateLoginMarkup(),
+                                                         cancellationToken: cancellationToken);
+                }
             }
             else
             {

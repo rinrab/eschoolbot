@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+csharp_prefer_simple_using_statement = false
+csharp_style_prefer_primary_constructors = false
