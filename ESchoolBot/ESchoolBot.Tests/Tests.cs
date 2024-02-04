@@ -40,6 +40,9 @@ namespace ESchoolBot.Tests
             // Get users
             var list = databaseClient.ListUsers();
             Assert.AreEqual(123, list[0].ChatId);
+
+            databaseClient.UpdateProcessedDiaries(123, 10);
+            Assert.AreEqual(10, databaseClient.ListUsers()[0].ProcessedDiaries);
         }
     }
 }

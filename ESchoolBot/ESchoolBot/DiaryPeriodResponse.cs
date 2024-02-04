@@ -8,6 +8,8 @@
         {
             public required int LessonId { get; set; }
             public string? Subject { get; set; }
+            public string? SugTotalMark { get; set; }
+            public string? TeachFio { get; set; }
         }
     }
 }

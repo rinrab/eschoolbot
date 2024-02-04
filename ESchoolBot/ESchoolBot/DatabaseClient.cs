@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using static ESchoolBot.PeriodsResponse;
 
 namespace ESchoolBot
 {
@@ -65,6 +66,21 @@ namespace ESchoolBot
                         command.ExecuteNonQuery();
                     }
                 }
+
+                if (GetVersion() < 3)
+                {
+                    using (SqliteCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText =
+                        """
+                        ALTER TABLE users ADD COLUMN processed_diaries INTEGER;
+
+                        UPDATE schema SET version=3;
+                        """;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
             }
         }
 
@@ -85,8 +101,8 @@ namespace ESchoolBot
             {
                 command.CommandText =
                     """
-                    INSERT INTO users (chat_id, username, password, session_id, user_id, period_id)
-                        VALUES ($chat_id, $username, $password, $session_id, $user_id, $period_id);
+                    INSERT INTO users (chat_id, username, password, session_id, user_id, period_id, processed_diaries)
+                        VALUES ($chat_id, $username, $password, $session_id, $user_id, $period_id, -1);
                     """;
                 command.Parameters.AddWithValue("chat_id", chatId);
                 command.Parameters.AddWithValue("username", username);
@@ -106,7 +122,7 @@ namespace ESchoolBot
             {
                 command.CommandText =
                     """
-                    SELECT chat_id, username, password, session_id, user_id, period_id FROM users;
+                    SELECT chat_id, username, password, session_id, user_id, period_id, processed_diaries FROM users;
                     """;
 
                 List<User> users = new List<User>();
@@ -123,11 +139,25 @@ namespace ESchoolBot
                             SessionId = reader.GetString(3),
                             UserId = reader.GetInt32(4),
                             PeriodId = reader.GetInt32(5),
+                            ProcessedDiaries = reader.GetInt32(6),
                         });
                     }
                 }
 
                 return users;
+            }
+        }
+
+        public void UpdateProcessedDiaries(long chatId, int processedDiaries)
+        {
+            using (SqliteConnection connection = databaseAccessor.CreateConnection())
+            using (SqliteCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE users SET processed_diaries=$processed_diaries WHERE chat_id=$chat_id;";
+                command.Parameters.AddWithValue("processed_diaries", processedDiaries);
+                command.Parameters.AddWithValue("chat_id", chatId);
+
+                command.ExecuteNonQuery();
             }
         }
 
@@ -139,6 +169,7 @@ namespace ESchoolBot
             public required string SessionId { get; set; }
             public required int UserId { get; set; }
             public required int PeriodId { get; set; }
+            public required int ProcessedDiaries { get; set; }
         }
     }
 }

@@ -30,6 +30,8 @@ namespace ESchoolBot
 
         public const string PostLogin = "Login completed! You are now subscribed to new resources. For assistance, type /help.";
 
+        public const string NotFound = "Не найдено";
+
         private static readonly CultureInfo culture = new CultureInfo("en-GB");
         private static readonly Regex htmlTagsRegex = new Regex(@"<.*?>|&nbsp;");
 
@@ -41,6 +43,17 @@ namespace ESchoolBot
         public static string FormatFullDate(DateTime date)
         {
             return date.ToString("s", culture);
+        }
+
+        public static string FormatNewDiaryMessage(DiaryPeriodResponse.DiaryPeriod diary)
+        {
+            return
+                $"""
+                Новая оценка по: {diary.Subject ?? NotFound}
+                Оценка: {diary.SugTotalMark ?? NotFound}
+                Учмтель: {diary.TeachFio ?? NotFound}
+                TODO:
+                """;
         }
     }
 }

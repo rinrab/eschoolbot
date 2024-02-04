@@ -47,7 +47,31 @@ namespace ESchoolBot
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
-            var diary = await eschoolClient.GetDiaryPeriodAsync(user.SessionId, user.UserId, user.PeriodId);
+            DiaryPeriodResponse.DiaryPeriod[] diaries = (await eschoolClient.GetDiaryPeriodAsync(
+                user.SessionId, user.UserId, user.PeriodId)).Result;
+
+            if (user.ProcessedDiaries == -1)
+            {
+                databaseClient.UpdateProcessedDiaries(user.ChatId, diaries.Length);
+            }
+            else
+            {
+                for (int i = diaries.Length - 1, sentMessages = 0; i >= user.ProcessedDiaries; i--)
+                {
+                    logger.LogInformation("{test}", diaries[i]);
+                    if (diaries[i].Subject != null)
+                    {
+                        await botClient.SendTextMessageAsync(user.ChatId, Formatter.FormatNewDiaryMessage(diaries[i]), cancellationToken: stoppingToken);
+                        sentMessages++;
+                    }
+
+                    if (sentMessages == 3)
+                    {
+                        break;
+                    }
+                }
+                databaseClient.UpdateProcessedDiaries(user.ChatId, diaries.Length);
+            }
         }
     }
 }
