@@ -17,11 +17,10 @@ namespace ESchoolBot
             this.httpClient = httpClient;
         }
 
-        public async Task<string> LoginAsync(string email, string password, CancellationToken cancellationToken)
+        public async Task<string> LoginAsync(string email, string passwordHash, CancellationToken cancellationToken)
         {
             StringBuilder bodyBuilder = new StringBuilder();
             bodyBuilder.AppendUrlEncoded("username", email);
-            var passwordHash = ComputeHash(password);
             bodyBuilder.AppendUrlEncoded("password", passwordHash);
             var device = new Device("web", "v.413", "eaBw24ID4Pz8UwK8nxfkwiW0aFnE9U56XJiA4GF1KtCXH6mKGzcVLDh08c1O2VjC", "Mozilla", 122, "Windows N", null);
             bodyBuilder.AppendUrlEncoded("device", JsonSerializer.Serialize(device));
@@ -44,11 +43,11 @@ namespace ESchoolBot
             // https://app.eschool.center/ec-server/student/getDiaryPeriod/?userId=108231&eiId=406054
         }
 
-        private string ComputeHash(string vpnProfileXml)
+        public static string ComputeHash(string str)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(vpnProfileXml));
+                byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(str));
 
                 StringBuilder rv = new StringBuilder(hash.Length * 2);
                 string symbols = "0123456789abcdef";

@@ -104,9 +104,10 @@ namespace ESchoolBot
             {
                 try
                 {
-                    string token = await client.LoginAsync(parsed.Email, parsed.Password, cancellationToken);
+                    string passwordHash = ESchoolClient.ComputeHash(parsed.Password);
+                    string sessionId = await client.LoginAsync(parsed.Email, passwordHash, cancellationToken);
 
-                    databaseClient.InsertUser(chatId, parsed.Email, parsed.Password, token);
+                    databaseClient.InsertUser(chatId, parsed.Email, passwordHash, sessionId);
 
                     await botClient.SendTextMessageAsync(chatId, Formatter.PostLogin,
                                                          replyMarkup: new ReplyKeyboardRemove(),
