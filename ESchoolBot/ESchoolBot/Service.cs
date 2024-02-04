@@ -105,9 +105,15 @@ namespace ESchoolBot
                 try
                 {
                     string passwordHash = ESchoolClient.ComputeHash(parsed.Password);
+
                     string sessionId = await client.LoginAsync(parsed.Email, passwordHash, cancellationToken);
 
-                    databaseClient.InsertUser(chatId, parsed.Email, passwordHash, sessionId);
+                    StateResponse state = await client.GetStateAsync(sessionId);
+                    GroupsResponse groups = await client.GetGroupsAsync(sessionId, state.UserId);
+                    PeriodsResponse periods = await client.GetPeriodsAsync(sessionId, groups.Last().GroupId);
+
+                    databaseClient.InsertUser(chatId, parsed.Email, passwordHash, sessionId,
+                                              state.UserId, periods.Items.First().Id);
 
                     await botClient.SendTextMessageAsync(chatId, Formatter.PostLogin,
                                                          replyMarkup: new ReplyKeyboardRemove(),

@@ -27,6 +27,7 @@ namespace ESchoolBot
                 services.AddSingleton<IDatabaseClient, DatabaseClient>();
 
                 services.AddHostedService<Service>();
+                services.AddHostedService<NotificationService>();
 
                 services.AddHttpClient("telegram_bot_client")
                     .AddTypedClient<ITelegramBotClient>((httpClient, serviceProvider) =>

@@ -1,6 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace ESchoolBot
 {
@@ -29,8 +31,8 @@ namespace ESchoolBot
 
             if (response.IsSuccessStatusCode)
             {
-                return response.Headers.GetValues("Set-Cookie").First();
-
+                string cookieHeader = response.Headers.GetValues("Set-Cookie").First();
+                return new Regex("^JSESSIONID=([a-zA-Z0-9]*)").Match(cookieHeader).Groups[1].Value;
             }
             else
             {
@@ -58,6 +60,49 @@ namespace ESchoolBot
                 }
                 return rv.ToString();
             }
+        }
+
+        public async Task<StateResponse> GetStateAsync(string sessionId)
+        {
+            return await GetRequestHelper<StateResponse>(sessionId, "/ec-server/state");
+        }
+
+        private async Task<T> GetRequestHelper<T>(string sessionId, string url)
+        {
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url))
+            {
+                request.Headers.Add("Cookie", "JSESSIONID=" + sessionId);
+
+                HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                response.EnsureSuccessStatusCode();
+
+                T? parsedResponse = await response.Content.ReadFromJsonAsync<T>();
+
+                if (parsedResponse == null)
+                {
+                    throw new Exception("Invalid json response");
+                }
+                else
+                {
+                    return parsedResponse;
+                }
+            }
+        }
+
+        public async Task<DiaryPeriodResponse> GetDiaryPeriodAsync(string sessionId, int userId, int periodId)
+        {
+            return await GetRequestHelper<DiaryPeriodResponse>(sessionId, $"/ec-server/student/getDiaryPeriod/?userId={userId}&eiId={periodId}");
+        }
+
+        public async Task<GroupsResponse> GetGroupsAsync(string sessionId, int userId)
+        {
+            return await GetRequestHelper<GroupsResponse>(sessionId, $"/ec-server/usr/getClassByUser?userId={userId}");
+        }
+
+        public async Task<PeriodsResponse> GetPeriodsAsync(string sessionId, int groupId)
+        {
+            return await GetRequestHelper<PeriodsResponse>(sessionId, $"/ec-server/dict/periods/0?groupId={groupId}");
         }
 
         public record Device(string cliType,
