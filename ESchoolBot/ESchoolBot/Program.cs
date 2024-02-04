@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
 
@@ -16,12 +17,15 @@ namespace ESchoolBot
 
             builder.ConfigureServices((context, services) =>
             {
+                services.Configure<Config>(context.Configuration.GetSection(Config.SectionName));
+
                 services.AddHostedService<Service>();
 
                 services.AddHttpClient("telegram_bot_client")
                     .AddTypedClient<ITelegramBotClient>((httpClient, serviceProvider) =>
                     {
-                        TelegramBotClientOptions options = new TelegramBotClientOptions("6877687541:AAHp62IN5oeWn__1fJdJ6c3v5g40UzEBDsE");
+                        Config config = serviceProvider.GetService<IOptions<Config>>()!.Value;
+                        TelegramBotClientOptions options = new TelegramBotClientOptions(config.BotToken);
                         return new TelegramBotClient(options, httpClient);
                     });
                 
