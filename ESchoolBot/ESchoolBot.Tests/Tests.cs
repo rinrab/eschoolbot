@@ -32,7 +32,7 @@ namespace ESchoolBot.Tests
             IDatabaseClient databaseClient = new DatabaseClient(databaseAccessor);
 
             // Add user
-            databaseClient.InsertUser("amogus_username", "amogus_password", "amogus_session");
+            databaseClient.InsertUser(123, "amogus_username", "amogus_password", "amogus_session");
         }
     }
 }
