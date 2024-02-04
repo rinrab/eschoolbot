@@ -76,7 +76,7 @@ namespace ESchoolBot
         {
             KeyboardButton button = KeyboardButton.WithWebApp(Formatter.LoginButtonText, new WebAppInfo
             {
-                Url = "https://rinrab.github.io/myspot-mirror-webapp/login.html"
+                Url = "https://rinrab.github.io/eschoolbot/login.html"
             });
 
             return new ReplyKeyboardMarkup(button)
