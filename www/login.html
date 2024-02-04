@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Login</title>
+    <style>
+        body {
+            --bg-color: var(--tg-theme-bg-color);
+            font: 12px/18px "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--tg-theme-text-color);
+            margin: 48px 24px;
+            padding: 0;
+            color-scheme: var(--tg-color-scheme);
+        }
+
+        a {
+            color: var(--tg-theme-link-color);
+        }
+
+        input {
+            box-sizing: border-box;
+            margin-bottom: 8px;
+            display: block;
+            padding: .8rem .5rem;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <form id="form" action="#">
+            <input type="text" autofocus required placeholder="Введите логин..." id="email" />
+            <input type="password" required placeholder="Введите пароль..." id="password" />
+            <input type="submit" style="visibility: collapse;">
+        </form>
+    </main>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        var emailInput = document.getElementById("email");
+        var passwordInput = document.getElementById("password");
+        var form = document.getElementById("form");
+
+        Telegram.WebApp.ready();
+
+        emailInput.value = localStorage.getItem("email") || "";
+
+        form.onsubmit = (ev) => {
+            ev.preventDefault();
+            login();
+        };
+
+        Telegram.WebApp.onEvent('themeChanged', function () {
+            document.documentElement.className = Telegram.WebApp.colorScheme;
+        });
+
+        Telegram.WebApp.MainButton.setParams({
+            text: 'Login'
+        });
+
+        function login() {
+            form.reportValidity();
+            if (form.checkValidity()) {
+                var email = emailInput.value;
+                var password = passwordInput.value;
+
+                localStorage.setItem("email", email);
+
+                Telegram.WebApp.sendData(JSON.stringify({ email, password }));
+            }
+        }
+
+        Telegram.WebApp.MainButton.onClick(login);
+
+        Telegram.WebApp.MainButton.show();
+
+        Telegram.WebApp.setHeaderColor('secondary_bg_color');
+
+        Telegram.WebApp.onEvent('themeChanged', function () {
+            document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
+        });
+    </script>
+</body>
+
+</html>

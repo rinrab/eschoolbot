@@ -1,0 +1,10 @@
+POST https://app.eschool.center/ec-server/login
+
+username=%D0%9B%D0%B5%D0%B2%20%D0%92%D0%BE%D0%BB%D0%BA%D0%BE%D0%B2&password=dfde054097d6f62dcf248c6fef16930916a47ab17d4a2a80ed747316ddf751ae&device=%7B%22cliType%22%3A%22web%22%2C%22cliVer%22%3A%22v.413%22%2C%22pushToken%22%3A%22tVLdDw5ozTHuAAYsGjyphx6aVCWGn2VpKIXKBU9hm7fQF1LnCMYzJI9d3NyiVoZJ%22%2C%22deviceName%22%3A%22Mozilla%22%2C%22deviceModel%22%3A122%2C%22cliOs%22%3A%22Windows%20N%22%2C%22cliOsVer%22%3Anull%7D
+
+https://app.eschool.center/ec-server/profile/getProfile_new?prsId=65471
+
+https://app.eschool.center/ec-server/usr/getUserListSearch
+
+
+https://app.eschool.center/ec-server/student/getDiaryPeriod/?userId=108231&eiId=406054
