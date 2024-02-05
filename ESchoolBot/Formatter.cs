@@ -19,7 +19,7 @@ namespace ESchoolBot
             
             /start - старт/логин
             
-            Автор: Timofei Zhakov, Идея: Лев Волков, [код проекта](https://github.com/rinrab/eschoolbot).
+            Автор: Timofei Zhakov, Идея: Лев Волков
             """;
 
         public const string LoginRequired = 
