@@ -88,7 +88,7 @@ namespace ESchoolBot
             }
             catch (LoginException)
             {
-                logger.LogInformation("Updating SessionId for user {username}", user.Username);
+                logger.LogInformation("Updating SessionId for user {chatId}", user.ChatId);
 
                 string newToken = await eschoolClient.LoginAsync(user.Username, user.Password, cancellationToken);
 
