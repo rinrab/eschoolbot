@@ -41,11 +41,6 @@ namespace ESchoolBot
             }
         }
 
-        public async Task GetDiaryPeriodAsync()
-        {
-            // https://app.eschool.center/ec-server/student/getDiaryPeriod/?userId=108231&eiId=406054
-        }
-
         public static string ComputeHash(string str)
         {
             using (SHA256 sha256 = SHA256.Create())
