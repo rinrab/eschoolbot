@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Primitives;
-using System.Text;
-using System.Web;
+﻿using System.Text;
 
 namespace ESchoolBot
 {
