@@ -11,21 +11,16 @@
     <title>Login</title>
     <style>
         body {
-            --bg-color: var(--tg-theme-bg-color);
-            background-color: var(--bg-color);
-            color: var(--tg-theme-text-color);
+            --bs-body-bg: var(--tg-theme-bg-color);
+            --bs-body-colorcolor: var(--tg-theme-text-color);
             margin: 48px 24px;
             padding: 0;
             color-scheme: var(--tg-color-scheme);
         }
-
-        a {
-            color: var(--tg-theme-link-color);
-        }
     </style>
 </head>
 
-<body>
+<body data-bs-theme="dark">
     <main>
         <form id="form" action="#">
             <input class="form-control mb-3" type="text" autofocus required placeholder="Введите логин..." id="email" />
