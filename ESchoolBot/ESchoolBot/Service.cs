@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ESchoolBot
@@ -55,6 +56,10 @@ namespace ESchoolBot
                             {
                                 await ProcessStartMessageAsync(chatId, cancellationToken);
                             }
+                            else
+                            {
+                                await SendHelpMessageAsync(chatId, cancellationToken);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -67,12 +72,25 @@ namespace ESchoolBot
                     {
                         await ProcessWebAppDataMessageAsync(chatId, message.WebAppData, cancellationToken);
                     }
+                    else
+                    {
+                        await SendHelpMessageAsync(chatId, cancellationToken);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error while handling update:");
             }
+        }
+
+        private async Task SendHelpMessageAsync(long chatId, CancellationToken cancellationToken)
+        {
+            await botClient.SendTextMessageAsync(chatId, Formatter.HelpMessage,
+                                                 replyMarkup: new ReplyKeyboardRemove(),
+                                                 parseMode: ParseMode.Markdown,
+                                                 disableWebPagePreview: true,
+                                                 cancellationToken: cancellationToken);
         }
 
         private IReplyMarkup CreateLoginMarkup()

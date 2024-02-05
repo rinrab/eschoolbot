@@ -22,13 +22,15 @@ namespace ESchoolBot
 
         public async Task<string> LoginAsync(string email, string passwordHash, CancellationToken cancellationToken)
         {
-            StringBuilder bodyBuilder = new StringBuilder();
-            bodyBuilder.AppendUrlEncoded("username", email);
-            bodyBuilder.AppendUrlEncoded("password", passwordHash);
-            var device = new Device("web", "v.413", "eaBw24ID4Pz8UwK8nxfkwiW0aFnE9U56XJiA4GF1KtCXH6mKGzcVLDh08c1O2VjC", "Mozilla", 122, "Windows N", null);
-            bodyBuilder.AppendUrlEncoded("device", JsonSerializer.Serialize(device));
+            Device device = new Device("web", "v.413", "eaBw24ID4Pz8UwK8nxfkwiW0aFnE9U56XJiA4GF1KtCXH6mKGzcVLDh08c1O2VjC", "Mozilla", 122, "Windows N", null);
 
-            var response = await httpClient.PostAsync("/ec-server/login", new StringContent(bodyBuilder.ToString(), null, "application/x-www-form-urlencoded"), cancellationToken);
+            string body = string.Format("username={0}&password={1}&device={2}",
+                                        Uri.EscapeDataString(email),
+                                        Uri.EscapeDataString(passwordHash),
+                                        Uri.EscapeDataString(JsonSerializer.Serialize(device)));
+            
+            HttpContent content = new StringContent(body, null, "application/x-www-form-urlencoded");
+            HttpResponseMessage response = await httpClient.PostAsync("/ec-server/login", content, cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {

@@ -115,7 +115,7 @@ namespace ESchoolBot
             {
                 command.CommandText =
                     """
-                    INSERT INTO users (chat_id, username, password, session_id, user_id, period_id, processed_diaries, processed_date)
+                    INSERT OR REPLACE INTO users (chat_id, username, password, session_id, user_id, period_id, processed_diaries, processed_date)
                         VALUES ($chat_id, $username, $password, $session_id, $user_id, $period_id, -1, $processed_date);
                     """;
                 command.Parameters.AddWithValue("chat_id", chatId);

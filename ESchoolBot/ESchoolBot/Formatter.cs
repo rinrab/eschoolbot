@@ -1,39 +1,46 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Text;
 
 namespace ESchoolBot
 {
     internal class Formatter
     {
         public const string StartMessage =
-                   "Please log in to subscribe to new resources and enable other bot features.";
+            """
+            Пожалуйста нажмите на кнопку ниже чтобы залогиниться:
+            """;
 
-        public const string LoginButtonText = "🔑 Log in";
-        public const string LoginPlaceholder = "👇 Click log in 👇";
+        public const string LoginButtonText = "🔑 Войти";
+        public const string LoginPlaceholder = "Нажмите на кнопку чтобы войти";
 
         public const string HelpMessage =
-            "I will send you new resources. Additionally, you can:\n" +
-            "\n" +
-            "/resources - View the latest resources\n" +
-            "/homework - Check the homework for the next days\n" +
-            "/reports - Access your reports and points\n" +
-            "/start - Start or log in\n" +
-            "\n" +
-            "Bot created by Timofei Zhakov.";
+            """
+            Я буду присылать вам новые оценки, с сайта eschool.center
+            
+            /start - старт/логин
+            
+            Автор: Timofei Zhakov, Идея: Лев Волков, [код проекта](https://github.com/rinrab/eschoolbot).
+            """;
 
-        public const string LoginRequired = "Please log in to use this bot.";
+        public const string LoginRequired = 
+            """
+            Не удалось войти в аккаунт.
+            Войдите пожалуйста еще раз:
+            """;
 
-        public const string IncorrectLoginOrPassword = "Login or password is incorrect. Please log in again.";
+        public const string IncorrectLoginOrPassword = 
+            """
+            Неправильный логин или пароль. Попробуйте еще раз:
+            """;
 
-        public const string FetchLoginError = "Cannot login while fetch. Please login again:";
-
-        public const string PostLogin = "Login completed! You are now subscribed to new resources. For assistance, type /help.";
+        public const string PostLogin =
+            """
+            Вход завершен! Теперь вам будут приходить уведомления у новых оценках.
+            """;
 
         public const string NotFound = "Не найдено";
 
         private static readonly CultureInfo culture = new CultureInfo("en-GB");
-        private static readonly Regex htmlTagsRegex = new Regex(@"<.*?>|&nbsp;");
 
         public static string FormatShortDate(DateTime date)
         {
@@ -49,7 +56,7 @@ namespace ESchoolBot
         {
             return
                 $"""
-                Новая оценка по <b>{diary.Subject ?? NotFound}</b>
+                Новая оценка по <b>{diary.Subject}</b>
                 Оценка: {diary.MarkValue}
                 Коэффецент: {diary.MarkWeight}
                 """;
