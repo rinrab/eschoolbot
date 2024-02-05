@@ -51,7 +51,7 @@ namespace ESchoolBot
                 $"""
                 Новая оценка по: {diary.Subject ?? NotFound}
                 Оценка: {diary.SugTotalMark ?? NotFound}
-                Учмтель: {diary.TeachFio ?? NotFound}
+                Учитель: {diary.TeachFio ?? NotFound}
                 TODO:
                 """;
         }
