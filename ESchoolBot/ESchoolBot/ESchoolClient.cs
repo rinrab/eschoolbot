@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -75,17 +76,26 @@ namespace ESchoolBot
 
                 HttpResponseMessage response = await httpClient.SendAsync(request);
 
-                response.EnsureSuccessStatusCode();
-
-                T? parsedResponse = await response.Content.ReadFromJsonAsync<T>();
-
-                if (parsedResponse == null)
+                if (response.IsSuccessStatusCode)
                 {
-                    throw new Exception("Invalid json response");
+                    T? parsedResponse = await response.Content.ReadFromJsonAsync<T>();
+
+                    if (parsedResponse == null)
+                    {
+                        throw new Exception("Invalid json response");
+                    }
+                    else
+                    {
+                        return parsedResponse;
+                    }
+                }
+                else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new LoginException();
                 }
                 else
                 {
-                    return parsedResponse;
+                    throw new Exception(string.Format("HTTP request failed: {0}", response.StatusCode));
                 }
             }
         }

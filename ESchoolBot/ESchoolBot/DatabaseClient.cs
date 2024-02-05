@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.Sqlite;
-using static ESchoolBot.PeriodsResponse;
 
 namespace ESchoolBot
 {
@@ -155,6 +154,19 @@ namespace ESchoolBot
             {
                 command.CommandText = "UPDATE users SET processed_diaries=$processed_diaries WHERE chat_id=$chat_id;";
                 command.Parameters.AddWithValue("processed_diaries", processedDiaries);
+                command.Parameters.AddWithValue("chat_id", chatId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateSessionId(long chatId, string sessionId)
+        {
+            using (SqliteConnection connection = databaseAccessor.CreateConnection())
+            using (SqliteCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE users SET session_id=$session_id WHERE chat_id=$chat_id;";
+                command.Parameters.AddWithValue("session_id", sessionId);
                 command.Parameters.AddWithValue("chat_id", chatId);
 
                 command.ExecuteNonQuery();
