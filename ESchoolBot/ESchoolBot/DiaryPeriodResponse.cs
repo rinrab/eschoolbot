@@ -1,4 +1,6 @@
-﻿namespace ESchoolBot
+﻿using System.Text.Json.Serialization;
+
+namespace ESchoolBot
 {
     public class DiaryPeriodResponse
     {
@@ -10,6 +12,15 @@
             public string? Subject { get; set; }
             public string? SugTotalMark { get; set; }
             public string? TeachFio { get; set; }
+
+            [JsonPropertyName("startDt")]
+            public DateTime StartDate {  get; set; }
+
+            [JsonPropertyName("mktWt")]
+            public float MarkWeight { get; set; }
+
+            [JsonPropertyName("markValId")]
+            public int MarkValue { get; set; }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
 
 namespace ESchoolBot
 {
@@ -47,6 +48,8 @@ namespace ESchoolBot
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
+            DateTime now = Formatter.GetDate();
+            
             DiaryPeriodResponse diariesResponse = await InvokeESchoolClientAsync(user,
                 async (sessionId, cancellationToken) =>
                 {
@@ -55,27 +58,21 @@ namespace ESchoolBot
 
             DiaryPeriodResponse.DiaryPeriod[] diaries = diariesResponse.Result;
 
-            if (user.ProcessedDiaries == -1)
+            var filteredDiaries = new List<DiaryPeriodResponse.DiaryPeriod>();
+            foreach (var diary in diaries)
             {
-                databaseClient.UpdateProcessedDiaries(user.ChatId, diaries.Length);
-            }
-            else
-            {
-                for (int i = diaries.Length - 1, sentMessages = 0; i >= user.ProcessedDiaries; i--)
+                if (diary.Subject != null && diary.StartDate == now)
                 {
-                    logger.LogInformation("{test}", diaries[i]);
-                    if (diaries[i].Subject != null)
-                    {
-                        await botClient.SendTextMessageAsync(user.ChatId, Formatter.FormatNewDiaryMessage(diaries[i]), cancellationToken: stoppingToken);
-                        sentMessages++;
-                    }
-
-                    if (sentMessages == 3)
-                    {
-                        break;
-                    }
+                    filteredDiaries.Add(diary);
                 }
-                databaseClient.UpdateProcessedDiaries(user.ChatId, diaries.Length);
+            }
+
+            foreach (var diary in filteredDiaries)
+            {
+                await botClient.SendTextMessageAsync(user.ChatId,
+                                                     Formatter.FormatNewDiaryMessage(diary),
+                                                     parseMode: ParseMode.Html,
+                                                     cancellationToken: stoppingToken);
             }
         }
 

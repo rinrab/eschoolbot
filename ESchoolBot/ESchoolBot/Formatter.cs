@@ -49,11 +49,16 @@ namespace ESchoolBot
         {
             return
                 $"""
-                Новая оценка по: {diary.Subject ?? NotFound}
-                Оценка: {diary.SugTotalMark ?? NotFound}
+                Новая оценка по <b>{diary.Subject ?? NotFound}</b>
+                Оценка: {diary.MarkValue}
+                Коэффецент: {diary.MarkWeight}
                 Учитель: {diary.TeachFio ?? NotFound}
-                TODO:
                 """;
+        }
+
+        public static DateTime GetDate()
+        {
+            return DateTime.UtcNow.AddHours(3).Date;
         }
     }
 }

@@ -80,6 +80,21 @@ namespace ESchoolBot
                         command.ExecuteNonQuery();
                     }
                 }
+
+                if (GetVersion() < 4)
+                {
+                    using (SqliteCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText =
+                        """
+                        ALTER TABLE users ADD COLUMN processed_date STRING;
+
+                        UPDATE schema SET version=4;
+                        """;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
             }
         }
 
@@ -100,8 +115,8 @@ namespace ESchoolBot
             {
                 command.CommandText =
                     """
-                    INSERT INTO users (chat_id, username, password, session_id, user_id, period_id, processed_diaries)
-                        VALUES ($chat_id, $username, $password, $session_id, $user_id, $period_id, -1);
+                    INSERT INTO users (chat_id, username, password, session_id, user_id, period_id, processed_diaries, processed_date)
+                        VALUES ($chat_id, $username, $password, $session_id, $user_id, $period_id, -1, $processed_date);
                     """;
                 command.Parameters.AddWithValue("chat_id", chatId);
                 command.Parameters.AddWithValue("username", username);
@@ -109,6 +124,7 @@ namespace ESchoolBot
                 command.Parameters.AddWithValue("session_id", sessionId);
                 command.Parameters.AddWithValue("user_id", userId);
                 command.Parameters.AddWithValue("period_id", periodId);
+                command.Parameters.AddWithValue("processed_date", Formatter.GetDate());
 
                 command.ExecuteNonQuery();
             }
@@ -121,7 +137,7 @@ namespace ESchoolBot
             {
                 command.CommandText =
                     """
-                    SELECT chat_id, username, password, session_id, user_id, period_id, processed_diaries FROM users;
+                    SELECT chat_id, username, password, session_id, user_id, period_id, processed_diaries, processed_date FROM users;
                     """;
 
                 List<User> users = new List<User>();
@@ -139,6 +155,7 @@ namespace ESchoolBot
                             UserId = reader.GetInt32(4),
                             PeriodId = reader.GetInt32(5),
                             ProcessedDiaries = reader.GetInt32(6),
+                            ProcessedDate = reader.GetDateTime(7),
                         });
                     }
                 }
@@ -182,6 +199,7 @@ namespace ESchoolBot
             public required int UserId { get; set; }
             public required int PeriodId { get; set; }
             public required int ProcessedDiaries { get; set; }
+            public required DateTime ProcessedDate { get; set; }
         }
     }
 }
