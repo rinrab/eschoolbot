@@ -47,28 +47,11 @@ namespace ESchoolBot
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
-            DiaryPeriodResponse diariesResponse;
-
-            try
-            {
-                diariesResponse = await eschoolClient.GetDiaryPeriodAsync(user.SessionId, user.UserId, user.PeriodId);
-            }
-            catch (LoginException)
-            {
-                try
+            DiaryPeriodResponse diariesResponse = await InvokeESchoolClientAsync(user,
+                async (sessionId, cancellationToken) =>
                 {
-                    string sessionId = await eschoolClient.LoginAsync(user.Username, user.Password, stoppingToken);
-                    databaseClient.UpdateSessionId(user.ChatId, sessionId);
-                    diariesResponse = await eschoolClient.GetDiaryPeriodAsync(user.SessionId, user.UserId, user.PeriodId);
-                }
-                catch (LoginException)
-                {
-                    await botClient.SendTextMessageAsync(user.ChatId, Formatter.LoginRequired,
-                                                         cancellationToken: stoppingToken);
-                    // TODO: disable notifications
-                    throw;
-                }
-            }
+                    return await eschoolClient.GetDiaryPeriodAsync(user.SessionId, user.UserId, user.PeriodId);
+                }, stoppingToken);
 
             DiaryPeriodResponse.DiaryPeriod[] diaries = diariesResponse.Result;
 
@@ -93,6 +76,38 @@ namespace ESchoolBot
                     }
                 }
                 databaseClient.UpdateProcessedDiaries(user.ChatId, diaries.Length);
+            }
+        }
+
+        private delegate Task<T> InvokeESchoolClientAction<T>(string sessionId, CancellationToken cancellationToken);
+
+        private async Task<T> InvokeESchoolClientAsync<T>(DatabaseClient.User user,
+                                                          InvokeESchoolClientAction<T> action,
+                                                          CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await action(user.SessionId, cancellationToken);
+            }
+            catch (LoginException)
+            {
+                logger.LogInformation("Updating SessionId for user {username}", user.Username);
+
+                string newToken = await eschoolClient.LoginAsync(user.Username, user.Password, cancellationToken);
+
+                databaseClient.UpdateSessionId(user.ChatId, newToken);
+
+                try
+                {
+                    return await action(newToken, cancellationToken);
+                }
+                catch (LoginException)
+                {
+                    await botClient.SendTextMessageAsync(user.ChatId,
+                                                         Formatter.LoginRequired,
+                                                         cancellationToken: cancellationToken);
+                    throw;
+                }
             }
         }
     }
