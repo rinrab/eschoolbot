@@ -59,13 +59,16 @@ namespace ESchoolBot
             DiaryPeriodResponse.DiaryPeriod[] diaries = diariesResponse.Result;
 
             var filteredDiaries = new List<DiaryPeriodResponse.DiaryPeriod>();
-            foreach (var diary in diaries)
+
+            foreach (DiaryPeriodResponse.DiaryPeriod diary in diaries)
             {
-                if (diary.Subject != null && diary.StartDate == now)
+                if (diary.MarkDate.HasValue && diary.MarkDate.Value > user.ProcessedDate)
                 {
                     filteredDiaries.Add(diary);
                 }
             }
+
+            filteredDiaries.Sort((a, b) => DateTime.Compare(a.MarkDate!.Value, b.MarkDate!.Value));
 
             foreach (var diary in filteredDiaries)
             {
@@ -73,6 +76,8 @@ namespace ESchoolBot
                                                      Formatter.FormatNewDiaryMessage(diary),
                                                      parseMode: ParseMode.Html,
                                                      cancellationToken: stoppingToken);
+
+                databaseClient.UpdateProcessedDate(user.ChatId, diary.MarkDate!.Value);
             }
         }
 

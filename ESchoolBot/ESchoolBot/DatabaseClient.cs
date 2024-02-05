@@ -164,13 +164,13 @@ namespace ESchoolBot
             }
         }
 
-        public void UpdateProcessedDiaries(long chatId, int processedDiaries)
+        public void UpdateProcessedDate(long chatId, DateTime date)
         {
             using (SqliteConnection connection = databaseAccessor.CreateConnection())
             using (SqliteCommand command = connection.CreateCommand())
             {
-                command.CommandText = "UPDATE users SET processed_diaries=$processed_diaries WHERE chat_id=$chat_id;";
-                command.Parameters.AddWithValue("processed_diaries", processedDiaries);
+                command.CommandText = "UPDATE users SET processed_date=$processed_date WHERE chat_id=$chat_id;";
+                command.Parameters.AddWithValue("processed_date", date);
                 command.Parameters.AddWithValue("chat_id", chatId);
 
                 command.ExecuteNonQuery();

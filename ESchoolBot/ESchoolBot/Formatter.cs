@@ -52,7 +52,6 @@ namespace ESchoolBot
                 Новая оценка по <b>{diary.Subject ?? NotFound}</b>
                 Оценка: {diary.MarkValue}
                 Коэффецент: {diary.MarkWeight}
-                Учитель: {diary.TeachFio ?? NotFound}
                 """;
         }
 
