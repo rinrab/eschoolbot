@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using Microsoft.Extensions.Options;
+using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
 namespace ESchoolBot
@@ -9,17 +10,19 @@ namespace ESchoolBot
         private readonly ILogger logger;
         private readonly ITelegramBotClient botClient;
         private readonly IESchoolClient eschoolClient;
-        private readonly int fetchDelay = 10;
+        private readonly int fetchDelay;
 
         public NotificationService(IDatabaseClient databaseClient,
                                    ILogger<NotificationService> logger,
                                    ITelegramBotClient botClient,
-                                   IESchoolClient eschoolClient)
+                                   IESchoolClient eschoolClient,
+                                   IOptions<Config> options)
         {
             this.databaseClient = databaseClient;
             this.logger = logger;
             this.botClient = botClient;
             this.eschoolClient = eschoolClient;
+            fetchDelay = options.Value.FetchDelay;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
