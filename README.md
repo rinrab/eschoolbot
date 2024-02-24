@@ -1,13 +1,13 @@
 # eschoolbot
 
-## How to build ?
+## Как собрать ?
 
-1. Open project in Visual Studio
-2. Open secrets.json using right-click to ESchoolBot project>Manage User Secrets
-3. Fill out secrets:
+1. Откройте проект в Visual Studio
+2. Откройте secrets.json при помощи `ESchoolBot>Manage User Secrets`
+3. Саполните секреты:
    ```json
    {
      "Config:BotToken": "<Telegram Bot Token>"
    }
    ```
-5. Press F5 to start bot
+5. Нажмите F5 чтобы запустить бота!
