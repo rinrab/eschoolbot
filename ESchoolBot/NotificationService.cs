@@ -52,7 +52,7 @@ namespace ESchoolBot
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
             DateTime now = Formatter.GetDate();
-            
+
             DiaryPeriodResponse diariesResponse = await InvokeESchoolClientAsync(user,
                 async (sessionId, cancellationToken) =>
                 {

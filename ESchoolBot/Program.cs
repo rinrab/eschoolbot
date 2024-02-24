@@ -36,7 +36,7 @@ namespace ESchoolBot
                         TelegramBotClientOptions options = new TelegramBotClientOptions(config.BotToken);
                         return new TelegramBotClient(options, httpClient);
                     });
-                
+
                 services.AddHttpClient("eschool_client")
                     .AddTypedClient<IESchoolClient>((httpClient, serviceProvider) =>
                     {

@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Text.RegularExpressions;
 
 namespace ESchoolBot
 {
@@ -20,13 +19,13 @@ namespace ESchoolBot
             /start - старт/логин
             """;
 
-        public const string LoginRequired = 
+        public const string LoginRequired =
             """
             Не удалось войти в аккаунт.
             Войдите пожалуйста еще раз:
             """;
 
-        public const string IncorrectLoginOrPassword = 
+        public const string IncorrectLoginOrPassword =
             """
             Неправильный логин или пароль. Попробуйте еще раз:
             """;

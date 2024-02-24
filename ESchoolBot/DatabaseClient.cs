@@ -129,7 +129,7 @@ namespace ESchoolBot
                 command.ExecuteNonQuery();
             }
         }
-        
+
         public List<User> ListUsers()
         {
             using (SqliteConnection connection = databaseAccessor.CreateConnection())

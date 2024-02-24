@@ -28,7 +28,7 @@ namespace ESchoolBot
                                         Uri.EscapeDataString(email),
                                         Uri.EscapeDataString(passwordHash),
                                         Uri.EscapeDataString(JsonSerializer.Serialize(device)));
-            
+
             HttpContent content = new StringContent(body, null, "application/x-www-form-urlencoded");
             HttpResponseMessage response = await httpClient.PostAsync("/ec-server/login", content, cancellationToken);
 
