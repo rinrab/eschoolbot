@@ -18,8 +18,6 @@ namespace ESchoolBot
             Я буду присылать вам новые оценки, с сайта eschool.center
             
             /start - старт/логин
-            
-            Автор: Timofei Zhakov, Идея: Лев Волков
             """;
 
         public const string LoginRequired = 
