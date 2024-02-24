@@ -3,6 +3,7 @@
   "profiles": {
     "Telegram": {
       "commandName": "Project",
+      "commandLineArgs": "--environment Development",
       "dotnetRunMessages": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
