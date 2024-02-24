@@ -93,7 +93,7 @@ namespace ESchoolBot
                                                  cancellationToken: cancellationToken);
         }
 
-        private IReplyMarkup CreateLoginMarkup()
+        private static IReplyMarkup CreateLoginMarkup()
         {
             KeyboardButton button = KeyboardButton.WithWebApp(Formatter.LoginButtonText, new WebAppInfo
             {
