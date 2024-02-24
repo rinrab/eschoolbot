@@ -11,3 +11,6 @@ dotnet_diagnostic.IDE0090.severity = silent
 
 # CA1859: Use concrete types when possible for improved performance
 dotnet_diagnostic.CA1859.severity = silent
+
+# Default severity for analyzer diagnostics with category 'Assertion'
+dotnet_analyzer_diagnostic.category-Assertion.severity = silent
