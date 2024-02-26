@@ -39,7 +39,7 @@ namespace ESchoolBot
 
         public const string NotFound = "Не найдено";
 
-        public static string BotDisabled =
+        public const string BotDisabled =
             """
             Вы отключили нотификации. Используйте комманду /start, чтобы перезапустить бота.
             """;
