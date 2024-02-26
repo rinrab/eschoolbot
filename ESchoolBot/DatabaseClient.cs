@@ -113,7 +113,6 @@ namespace ESchoolBot
                     }
                 }
 
-
                 if (GetVersion() < 6)
                 {
                     using (SqliteCommand command = connection.CreateCommand())
@@ -122,6 +121,21 @@ namespace ESchoolBot
                         """
                         ALTER TABLE users ADD COLUMN is_enabled BOOL;
 
+                        UPDATE schema SET version=6;
+                        """;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                
+                if (GetVersion() < 7)
+                {
+                    using (SqliteCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText =
+                        """
+                        UPDATE users SET is_enabled=TRUE;
+                        
                         UPDATE schema SET version=6;
                         """;
 
