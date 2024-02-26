@@ -49,6 +49,11 @@ namespace ESchoolBot
             return date.ToString("MMM dd", culture);
         }
 
+        public static string FormatLongDate(DateTime date)
+        {
+            return date.ToString("dd MMMM yyyy", culture);
+        }
+
         public static string FormatFullDate(DateTime date)
         {
             return date.ToString("s", culture);
@@ -60,7 +65,9 @@ namespace ESchoolBot
                 $"""
                 Новая оценка по <b>{diary.Subject}</b>
                 Оценка: {diary.MarkValue}
-                Коэффецент: {diary.MarkWeight}
+                Коэффецент: {diary.MarkWeight:F1}
+
+                <i>{FormatLongDate(diary.MarkDate!.Value)}</i>
                 """;
         }
 
