@@ -40,6 +40,7 @@ namespace ESchoolBot
                     {
                         try
                         {
+                            logger.LogInformation("Fetching user {userId}", user.ChatId);
                             await FetchUser(user, stoppingToken);
                         }
                         catch (Exception ex)
