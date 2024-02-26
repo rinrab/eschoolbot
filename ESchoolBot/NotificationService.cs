@@ -60,7 +60,7 @@ namespace ESchoolBot
         {
             DiaryPeriod[] diaries = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
 
-            var filteredDiaries = new List<DiaryPeriod>();
+            List<DiaryPeriod> filteredDiaries = [];
 
             foreach (DiaryPeriod diary in diaries)
             {
@@ -72,7 +72,7 @@ namespace ESchoolBot
 
             filteredDiaries.Sort(DiaryComparer);
 
-            foreach (var diary in filteredDiaries)
+            foreach (DiaryPeriod diary in filteredDiaries)
             {
                 await botClient.SendTextMessageAsync(user.ChatId,
                                                      Formatter.FormatNewDiaryMessage(diary),
