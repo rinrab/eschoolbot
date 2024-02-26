@@ -53,7 +53,7 @@ namespace ESchoolBot
                 await Task.Delay(TimeSpan.FromSeconds(fetchDelay), stoppingToken);
             }
 
-            logger.LogInformation($"Notification service stopped");
+            logger.LogInformation("Notification service stopped");
         }
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
