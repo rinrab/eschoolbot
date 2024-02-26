@@ -21,7 +21,7 @@ namespace ESchoolBot
             this.logger = logger;
         }
 
-        public async Task<DiaryPeriodResponse.DiaryPeriod[]> GetDiariesAsync(DatabaseClient.User user, CancellationToken cancellationToken)
+        public async Task<DiaryPeriod[]> GetDiariesAsync(DatabaseClient.User user, CancellationToken cancellationToken)
         {
             StateResponse state = await InvokeESchoolClientAsync(
                 user,

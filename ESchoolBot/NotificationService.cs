@@ -58,11 +58,11 @@ namespace ESchoolBot
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
-            DiaryPeriodResponse.DiaryPeriod[] diaries = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
+            DiaryPeriod[] diaries = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
 
-            var filteredDiaries = new List<DiaryPeriodResponse.DiaryPeriod>();
+            var filteredDiaries = new List<DiaryPeriod>();
 
-            foreach (DiaryPeriodResponse.DiaryPeriod diary in diaries)
+            foreach (DiaryPeriod diary in diaries)
             {
                 if (diary.MarkDate.HasValue && diary.MarkDate.Value > user.ProcessedDate)
                 {
@@ -83,7 +83,7 @@ namespace ESchoolBot
             }
         }
 
-        private static int DiaryComparer(DiaryPeriodResponse.DiaryPeriod a, DiaryPeriodResponse.DiaryPeriod b)
+        private static int DiaryComparer(DiaryPeriod a, DiaryPeriod b)
         {
             return DateTime.Compare(a.MarkDate!.Value, b.MarkDate!.Value);
         }

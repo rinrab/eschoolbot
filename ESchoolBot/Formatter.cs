@@ -55,7 +55,7 @@ namespace ESchoolBot
             return date.ToString("s", culture);
         }
 
-        public static string FormatNewDiaryMessage(DiaryPeriodResponse.DiaryPeriod diary)
+        public static string FormatNewDiaryMessage(DiaryPeriod diary)
         {
             return
                 $"""
