@@ -58,8 +58,6 @@ namespace ESchoolBot
 
             DiaryPeriodResponse.DiaryPeriod[] diaries = await GetDiariesAsync(user, stoppingToken);
 
-            DateTime now = Formatter.GetDate();
-
             var filteredDiaries = new List<DiaryPeriodResponse.DiaryPeriod>();
 
             foreach (DiaryPeriodResponse.DiaryPeriod diary in diaries)
