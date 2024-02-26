@@ -2,7 +2,7 @@
 
 namespace ESchoolBot
 {
-    internal class Formatter
+    public class Formatter
     {
         public const string StartMessage =
             """
@@ -12,14 +12,20 @@ namespace ESchoolBot
         public const string LoginButtonText = "🔑 Войти";
         public const string LoginPlaceholder = "Нажмите на кнопку чтобы войти";
 
+        public const string PostLogin =
+            """
+            Вход завершен! Теперь вам будут приходить уведомления у новых оценках.
+            """;
+
         public const string HelpMessage =
             """
             Я буду присылать вам новые оценки с сайта eschool.center
-            
+
             /start - старт/логин
             /off - выключить бота
             """;
 
+        // Errors
         public const string LoginRequired =
             """
             Не удалось войти в аккаунт.
@@ -31,14 +37,7 @@ namespace ESchoolBot
             Неправильный логин или пароль. Попробуйте еще раз:
             """;
 
-        public const string PostLogin =
-            """
-            Вход завершен! Теперь вам будут приходить уведомления у новых оценках.
-            """;
-
         public const string NotFound = "Не найдено";
-
-        private static readonly CultureInfo culture = new CultureInfo("en-GB");
 
         public static string BotDisabled =
             """
@@ -69,5 +68,7 @@ namespace ESchoolBot
         {
             return DateTime.UtcNow.AddHours(3).Date;
         }
+
+        private static readonly CultureInfo culture = new CultureInfo("en-GB");
     }
 }
