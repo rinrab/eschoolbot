@@ -70,7 +70,7 @@ namespace ESchoolBot
                 }
             }
 
-            filteredDiaries.Sort((a, b) => DateTime.Compare(a.MarkDate!.Value, b.MarkDate!.Value));
+            filteredDiaries.Sort(DiaryComparer);
 
             foreach (var diary in filteredDiaries)
             {
@@ -81,6 +81,11 @@ namespace ESchoolBot
 
                 databaseClient.UpdateProcessedDate(user.ChatId, diary.MarkDate!.Value);
             }
+        }
+
+        private static int DiaryComparer(DiaryPeriodResponse.DiaryPeriod a, DiaryPeriodResponse.DiaryPeriod b)
+        {
+            return DateTime.Compare(a.MarkDate!.Value, b.MarkDate!.Value);
         }
     }
 }
