@@ -69,6 +69,6 @@ namespace ESchoolBot
             return DateTime.UtcNow.AddHours(3).Date;
         }
 
-        private static readonly CultureInfo culture = new CultureInfo("en-GB");
+        private static readonly CultureInfo culture = new CultureInfo("ru-RU");
     }
 }
