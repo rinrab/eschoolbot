@@ -175,7 +175,6 @@ namespace ESchoolBot
             }
         }
 
-
         private class LoginData
         {
             [JsonPropertyName("email")]
