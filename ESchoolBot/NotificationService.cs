@@ -36,13 +36,16 @@ namespace ESchoolBot
 
                 foreach (DatabaseClient.User user in users)
                 {
-                    try
+                    if (user.IsEnabled)
                     {
-                        await FetchUser(user, stoppingToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "Error while processing fetch for user {userId}", user.ChatId);
+                        try
+                        {
+                            await FetchUser(user, stoppingToken);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.LogError(ex, "Error while processing fetch for user {userId}", user.ChatId);
+                        }
                     }
                 }
 
@@ -52,11 +55,6 @@ namespace ESchoolBot
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
-            if (!user.IsEnabled)
-            {
-                return;
-            }
-
             DiaryPeriodResponse.DiaryPeriod[] diaries = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
 
             var filteredDiaries = new List<DiaryPeriodResponse.DiaryPeriod>();
