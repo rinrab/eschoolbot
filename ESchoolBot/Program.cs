@@ -43,7 +43,7 @@ namespace ESchoolBot
 
                 services.AddSingleton<IDatabaseClient, DatabaseClient>();
                 services.AddSingleton<IESchoolAccessor, ESchoolAccessor>();
-                services.AddHostedService<Service>();
+                services.AddHostedService<TelegramService>();
                 services.AddHostedService<NotificationService>();
 
                 services.AddHttpClient("telegram_bot_client")

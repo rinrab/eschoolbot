@@ -8,14 +8,14 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ESchoolBot
 {
-    public class Service : BackgroundService
+    public class TelegramService : BackgroundService
     {
         private readonly ILogger logger;
         private readonly ITelegramBotClient botClient;
         private readonly IESchoolClient client;
         private readonly IDatabaseClient databaseClient;
 
-        public Service(ILogger<Service> logger, ITelegramBotClient botClient, IESchoolClient client, IDatabaseClient databaseClient)
+        public TelegramService(ILogger<TelegramService> logger, ITelegramBotClient botClient, IESchoolClient client, IDatabaseClient databaseClient)
         {
             this.logger = logger;
             this.botClient = botClient;
