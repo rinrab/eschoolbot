@@ -87,6 +87,11 @@ namespace ESchoolBot
                     await botClient.SendTextMessageAsync(user.ChatId,
                                                          Formatter.LoginRequired,
                                                          cancellationToken: cancellationToken);
+
+                    databaseClient.DisableUser(user.ChatId);
+
+                    logger.LogWarning("Notifications for user {chatId} was disabled due to login error", user.ChatId);
+
                     throw;
                 }
             }
