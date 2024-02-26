@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging.EventLog;
 using Microsoft.Extensions.Options;
-using System.Net.Http;
 using Telegram.Bot;
 
 namespace ESchoolBot
