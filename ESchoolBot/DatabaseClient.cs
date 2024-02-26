@@ -179,7 +179,7 @@ namespace ESchoolBot
                     FROM users;
                     """;
 
-                List<User> users = new List<User>();
+                List<User> users = [];
 
                 using (SqliteDataReader reader = command.ExecuteReader())
                 {
