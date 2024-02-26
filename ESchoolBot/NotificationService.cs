@@ -51,13 +51,41 @@ namespace ESchoolBot
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
-            DateTime now = Formatter.GetDate();
-
-            DiaryPeriodResponse diariesResponse = await InvokeESchoolClientAsync(user,
+            StateResponse state = await InvokeESchoolClientAsync(
+                user,
                 async (sessionId, cancellationToken) =>
                 {
-                    return await eschoolClient.GetDiaryPeriodAsync(user.SessionId, user.UserId, user.PeriodId);
-                }, stoppingToken);
+                    return await eschoolClient.GetStateAsync(user.SessionId);
+                },
+                stoppingToken);
+
+            GroupsResponse groups = await InvokeESchoolClientAsync(
+                user,
+                async (sessionId, cancellationToken) =>
+                {
+                    return await eschoolClient.GetGroupsAsync(user.SessionId, state.UserId);
+                },
+                stoppingToken);
+
+            PeriodsResponse periods = await InvokeESchoolClientAsync(
+                user,
+                async (sessionId, cancellationtoken) =>
+                {
+                    return await eschoolClient.GetPeriodsAsync(user.SessionId, groups.Last().GroupId);
+                },
+                stoppingToken);
+
+            int periodId = periods.Items.First().Id;
+
+            DiaryPeriodResponse diariesResponse = await InvokeESchoolClientAsync(
+                user,
+                async (sessionId, cancellationToken) =>
+                {
+                    return await eschoolClient.GetDiaryPeriodAsync(user.SessionId, state.UserId, periodId);
+                },
+                stoppingToken);
+
+            DateTime now = Formatter.GetDate();
 
             DiaryPeriodResponse.DiaryPeriod[] diaries = diariesResponse.Result;
 

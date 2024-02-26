@@ -95,6 +95,23 @@ namespace ESchoolBot
                         command.ExecuteNonQuery();
                     }
                 }
+
+                if (GetVersion() < 5)
+                {
+                    using (SqliteCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText =
+                        """
+                        ALTER TABLE users DROP COLUMN user_id;
+                        ALTER TABLE users DROP COLUMN period_id;
+                        ALTER TABLE users DROP COLUMN processed_diaries;
+
+                        UPDATE schema SET version=5;
+                        """;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
             }
         }
 
@@ -108,22 +125,21 @@ namespace ESchoolBot
             }
         }
 
-        public void InsertUser(long chatId, string username, string password, string sessionId, int userId, int periodId)
+        public void InsertUser(long chatId, string username, string password, string sessionId)
         {
             using (SqliteConnection connection = databaseAccessor.CreateConnection())
             using (SqliteCommand command = connection.CreateCommand())
             {
                 command.CommandText =
                     """
-                    INSERT OR REPLACE INTO users (chat_id, username, password, session_id, user_id, period_id, processed_diaries, processed_date)
-                        VALUES ($chat_id, $username, $password, $session_id, $user_id, $period_id, -1, $processed_date);
+                    INSERT OR REPLACE INTO
+                        users (chat_id, username, password, session_id, processed_date)
+                        VALUES ($chat_id, $username, $password, $session_id, $processed_date);
                     """;
                 command.Parameters.AddWithValue("chat_id", chatId);
                 command.Parameters.AddWithValue("username", username);
                 command.Parameters.AddWithValue("password", password);
                 command.Parameters.AddWithValue("session_id", sessionId);
-                command.Parameters.AddWithValue("user_id", userId);
-                command.Parameters.AddWithValue("period_id", periodId);
                 command.Parameters.AddWithValue("processed_date", Formatter.GetDate());
 
                 command.ExecuteNonQuery();
@@ -137,7 +153,7 @@ namespace ESchoolBot
             {
                 command.CommandText =
                     """
-                    SELECT chat_id, username, password, session_id, user_id, period_id, processed_diaries, processed_date FROM users;
+                    SELECT chat_id, username, password, session_id, processed_date FROM users;
                     """;
 
                 List<User> users = new List<User>();
@@ -152,10 +168,7 @@ namespace ESchoolBot
                             Username = reader.GetString(1),
                             Password = reader.GetString(2),
                             SessionId = reader.GetString(3),
-                            UserId = reader.GetInt32(4),
-                            PeriodId = reader.GetInt32(5),
-                            ProcessedDiaries = reader.GetInt32(6),
-                            ProcessedDate = reader.GetDateTime(7),
+                            ProcessedDate = reader.GetDateTime(4),
                         });
                     }
                 }
@@ -196,9 +209,6 @@ namespace ESchoolBot
             public required string Username { get; set; }
             public required string Password { get; set; }
             public required string SessionId { get; set; }
-            public required int UserId { get; set; }
-            public required int PeriodId { get; set; }
-            public required int ProcessedDiaries { get; set; }
             public required DateTime ProcessedDate { get; set; }
         }
     }
