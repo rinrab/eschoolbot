@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging.EventLog;
 using Microsoft.Extensions.Options;
+using System.Net.Http;
 using Telegram.Bot;
 
 namespace ESchoolBot
@@ -51,6 +52,7 @@ namespace ESchoolBot
 
                 services.AddHttpClient("eschool_client")
                     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler() { UseCookies = false })
+                    .ConfigureHttpClient(httpClient => ESchoolClient.ConfigureDefaultHttpClient(httpClient))
                     .AddTypedClient<IESchoolClient>(httpClient => new ESchoolClient(httpClient));
             });
 

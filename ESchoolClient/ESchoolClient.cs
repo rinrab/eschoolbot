@@ -13,10 +13,6 @@ namespace ESchoolBot
 
         public ESchoolClient(HttpClient httpClient)
         {
-            httpClient.DefaultRequestHeaders.Add("Cookie", "site_ver=app");
-            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0");
-            httpClient.DefaultRequestHeaders.Add("Accept", "application/json, text/plain, */*");
-            httpClient.BaseAddress = new Uri("https://app.eschool.center");
             this.httpClient = httpClient;
         }
 
@@ -58,6 +54,14 @@ namespace ESchoolBot
                 }
                 return rv.ToString();
             }
+        }
+
+        public static void ConfigureDefaultHttpClient(HttpClient httpClient)
+        {
+            httpClient.DefaultRequestHeaders.Add("Cookie", "site_ver=app");
+            httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0");
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json, text/plain, */*");
+            httpClient.BaseAddress = new Uri("https://app.eschool.center");
         }
 
         public async Task<StateResponse> GetStateAsync(string sessionId)
