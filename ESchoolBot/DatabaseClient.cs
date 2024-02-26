@@ -131,7 +131,7 @@ namespace ESchoolBot
             }
         }
 
-        private int GetVersion()
+        public int GetVersion()
         {
             using (SqliteConnection connection = databaseAccessor.CreateConnection())
             using (SqliteCommand command = connection.CreateCommand())
@@ -247,6 +247,22 @@ namespace ESchoolBot
             public required string SessionId { get; set; }
             public required DateTime ProcessedDate { get; set; }
             public required bool IsEnabled { get; set; }
+
+            public override bool Equals(object? obj)
+            {
+                return obj is User user &&
+                       ChatId == user.ChatId &&
+                       Username == user.Username &&
+                       Password == user.Password &&
+                       SessionId == user.SessionId &&
+                       ProcessedDate == user.ProcessedDate &&
+                       IsEnabled == user.IsEnabled;
+            }
+
+            public override int GetHashCode()
+            {
+                return 0;
+            }
         }
     }
 }

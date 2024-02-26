@@ -17,3 +17,6 @@ dotnet_analyzer_diagnostic.category-Assertion.severity = silent
 
 # CA1416: Validate platform compatibility
 dotnet_diagnostic.CA1416.severity = silent
+
+# CA1816: Dispose methods should call SuppressFinalize
+dotnet_diagnostic.CA1816.severity = silent
