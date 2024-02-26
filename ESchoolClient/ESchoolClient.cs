@@ -41,19 +41,17 @@ namespace ESchoolBot
 
         public static string ComputeHash(string str)
         {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(str));
+            byte[] hash = SHA256.HashData(Encoding.UTF8.GetBytes(str));
 
-                StringBuilder rv = new StringBuilder(hash.Length * 2);
-                string symbols = "0123456789abcdef";
-                foreach (byte b in hash)
-                {
-                    rv.Append(symbols[b / 16]);
-                    rv.Append(symbols[b % 16]);
-                }
-                return rv.ToString();
+            StringBuilder rv = new StringBuilder(hash.Length * 2);
+            string symbols = "0123456789abcdef";
+            foreach (byte b in hash)
+            {
+                rv.Append(symbols[b / 16]);
+                rv.Append(symbols[b % 16]);
             }
+
+            return rv.ToString();
         }
 
         public static void ConfigureDefaultHttpClient(HttpClient httpClient)
