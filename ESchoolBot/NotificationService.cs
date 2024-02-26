@@ -56,43 +56,9 @@ namespace ESchoolBot
                 return;
             }
 
-            StateResponse state = await InvokeESchoolClientAsync(
-                user,
-                async (sessionId, cancellationToken) =>
-                {
-                    return await eschoolClient.GetStateAsync(user.SessionId);
-                },
-                stoppingToken);
-
-            GroupsResponse groups = await InvokeESchoolClientAsync(
-                user,
-                async (sessionId, cancellationToken) =>
-                {
-                    return await eschoolClient.GetGroupsAsync(user.SessionId, state.UserId);
-                },
-                stoppingToken);
-
-            PeriodsResponse periods = await InvokeESchoolClientAsync(
-                user,
-                async (sessionId, cancellationtoken) =>
-                {
-                    return await eschoolClient.GetPeriodsAsync(user.SessionId, groups.Last().GroupId);
-                },
-                stoppingToken);
-
-            int periodId = periods.Items.First().Id;
-
-            DiaryPeriodResponse diariesResponse = await InvokeESchoolClientAsync(
-                user,
-                async (sessionId, cancellationToken) =>
-                {
-                    return await eschoolClient.GetDiaryPeriodAsync(user.SessionId, state.UserId, periodId);
-                },
-                stoppingToken);
+            DiaryPeriodResponse.DiaryPeriod[] diaries = await GetDiariesAsync(user, stoppingToken);
 
             DateTime now = Formatter.GetDate();
-
-            DiaryPeriodResponse.DiaryPeriod[] diaries = diariesResponse.Result;
 
             var filteredDiaries = new List<DiaryPeriodResponse.DiaryPeriod>();
 
@@ -115,6 +81,45 @@ namespace ESchoolBot
 
                 databaseClient.UpdateProcessedDate(user.ChatId, diary.MarkDate!.Value);
             }
+        }
+
+        private async Task<DiaryPeriodResponse.DiaryPeriod[]> GetDiariesAsync(DatabaseClient.User user, CancellationToken cancellationToken)
+        {
+            StateResponse state = await InvokeESchoolClientAsync(
+                user,
+                async (sessionId, cancellationToken) =>
+                {
+                    return await eschoolClient.GetStateAsync(user.SessionId);
+                },
+                cancellationToken);
+
+            GroupsResponse groups = await InvokeESchoolClientAsync(
+                user,
+                async (sessionId, cancellationToken) =>
+                {
+                    return await eschoolClient.GetGroupsAsync(user.SessionId, state.UserId);
+                },
+                cancellationToken);
+
+            PeriodsResponse periods = await InvokeESchoolClientAsync(
+                user,
+                async (sessionId, cancellationtoken) =>
+                {
+                    return await eschoolClient.GetPeriodsAsync(user.SessionId, groups.Last().GroupId);
+                },
+                cancellationToken);
+
+            int periodId = periods.Items.First().Id;
+
+            DiaryPeriodResponse diariesResponse = await InvokeESchoolClientAsync(
+                user,
+                async (sessionId, cancellationToken) =>
+                {
+                    return await eschoolClient.GetDiaryPeriodAsync(user.SessionId, state.UserId, periodId);
+                },
+                cancellationToken);
+
+            return diariesResponse.Result;
         }
 
         private delegate Task<T> InvokeESchoolClientAction<T>(string sessionId, CancellationToken cancellationToken);
