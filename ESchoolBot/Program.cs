@@ -51,10 +51,7 @@ namespace ESchoolBot
 
                 services.AddHttpClient("eschool_client")
                     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler() { UseCookies = false })
-                    .AddTypedClient<IESchoolClient>((httpClient, serviceProvider) =>
-                    {
-                        return new ESchoolClient(httpClient);
-                    });
+                    .AddTypedClient<IESchoolClient>(httpClient => new ESchoolClient(httpClient));
             });
 
             IHost app = builder.Build();
