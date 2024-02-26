@@ -9,19 +9,20 @@ namespace ESchoolBot
         private readonly IDatabaseClient databaseClient;
         private readonly ILogger logger;
         private readonly ITelegramBotClient botClient;
-        private readonly IESchoolClient eschoolClient;
+        private readonly IESchoolAccessor eschoolAccessor;
         private readonly int fetchDelay;
 
         public NotificationService(IDatabaseClient databaseClient,
                                    ILogger<NotificationService> logger,
                                    ITelegramBotClient botClient,
-                                   IESchoolClient eschoolClient,
+                                   IESchoolAccessor eschoolAccessor,
                                    IOptions<Config> options)
         {
             this.databaseClient = databaseClient;
             this.logger = logger;
             this.botClient = botClient;
-            this.eschoolClient = eschoolClient;
+            this.eschoolAccessor = eschoolAccessor;
+
             fetchDelay = options.Value.FetchDelay;
         }
 
@@ -56,7 +57,7 @@ namespace ESchoolBot
                 return;
             }
 
-            DiaryPeriodResponse.DiaryPeriod[] diaries = await GetDiariesAsync(user, stoppingToken);
+            DiaryPeriodResponse.DiaryPeriod[] diaries = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
 
             var filteredDiaries = new List<DiaryPeriodResponse.DiaryPeriod>();
 
@@ -78,77 +79,6 @@ namespace ESchoolBot
                                                      cancellationToken: stoppingToken);
 
                 databaseClient.UpdateProcessedDate(user.ChatId, diary.MarkDate!.Value);
-            }
-        }
-
-        private async Task<DiaryPeriodResponse.DiaryPeriod[]> GetDiariesAsync(DatabaseClient.User user, CancellationToken cancellationToken)
-        {
-            StateResponse state = await InvokeESchoolClientAsync(
-                user,
-                async (sessionId, cancellationToken) =>
-                {
-                    return await eschoolClient.GetStateAsync(user.SessionId);
-                },
-                cancellationToken);
-
-            GroupsResponse groups = await InvokeESchoolClientAsync(
-                user,
-                async (sessionId, cancellationToken) =>
-                {
-                    return await eschoolClient.GetGroupsAsync(user.SessionId, state.UserId);
-                },
-                cancellationToken);
-
-            PeriodsResponse periods = await InvokeESchoolClientAsync(
-                user,
-                async (sessionId, cancellationtoken) =>
-                {
-                    return await eschoolClient.GetPeriodsAsync(user.SessionId, groups.Last().GroupId);
-                },
-                cancellationToken);
-
-            int periodId = periods.Items.First().Id;
-
-            DiaryPeriodResponse diariesResponse = await InvokeESchoolClientAsync(
-                user,
-                async (sessionId, cancellationToken) =>
-                {
-                    return await eschoolClient.GetDiaryPeriodAsync(user.SessionId, state.UserId, periodId);
-                },
-                cancellationToken);
-
-            return diariesResponse.Result;
-        }
-
-        private delegate Task<T> InvokeESchoolClientAction<T>(string sessionId, CancellationToken cancellationToken);
-
-        private async Task<T> InvokeESchoolClientAsync<T>(DatabaseClient.User user,
-                                                          InvokeESchoolClientAction<T> action,
-                                                          CancellationToken cancellationToken)
-        {
-            try
-            {
-                return await action(user.SessionId, cancellationToken);
-            }
-            catch (LoginException)
-            {
-                logger.LogInformation("Updating SessionId for user {chatId}", user.ChatId);
-
-                string newToken = await eschoolClient.LoginAsync(user.Username, user.Password, cancellationToken);
-
-                databaseClient.UpdateSessionId(user.ChatId, newToken);
-
-                try
-                {
-                    return await action(newToken, cancellationToken);
-                }
-                catch (LoginException)
-                {
-                    await botClient.SendTextMessageAsync(user.ChatId,
-                                                         Formatter.LoginRequired,
-                                                         cancellationToken: cancellationToken);
-                    throw;
-                }
             }
         }
     }

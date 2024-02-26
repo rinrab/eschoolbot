@@ -42,7 +42,7 @@ namespace ESchoolBot
                     });
 
                 services.AddSingleton<IDatabaseClient, DatabaseClient>();
-
+                services.AddSingleton<IESchoolAccessor, ESchoolAccessor>();
                 services.AddHostedService<Service>();
                 services.AddHostedService<NotificationService>();
 
