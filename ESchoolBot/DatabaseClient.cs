@@ -112,6 +112,22 @@ namespace ESchoolBot
                         command.ExecuteNonQuery();
                     }
                 }
+
+
+                if (GetVersion() < 6)
+                {
+                    using (SqliteCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText =
+                        """
+                        ALTER TABLE users ADD COLUMN is_enabled BOOL;
+
+                        UPDATE schema SET version=6;
+                        """;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
             }
         }
 
@@ -133,8 +149,8 @@ namespace ESchoolBot
                 command.CommandText =
                     """
                     INSERT OR REPLACE INTO
-                        users (chat_id, username, password, session_id, processed_date)
-                        VALUES ($chat_id, $username, $password, $session_id, $processed_date);
+                        users (chat_id, username, password, session_id, processed_date, is_enabled)
+                        VALUES ($chat_id, $username, $password, $session_id, $processed_date, TRUE);
                     """;
                 command.Parameters.AddWithValue("chat_id", chatId);
                 command.Parameters.AddWithValue("username", username);
@@ -153,7 +169,13 @@ namespace ESchoolBot
             {
                 command.CommandText =
                     """
-                    SELECT chat_id, username, password, session_id, processed_date FROM users;
+                    SELECT chat_id,
+                           username,
+                           password,
+                           session_id,
+                           processed_date,
+                           is_enabled
+                    FROM users;
                     """;
 
                 List<User> users = new List<User>();
@@ -169,6 +191,7 @@ namespace ESchoolBot
                             Password = reader.GetString(2),
                             SessionId = reader.GetString(3),
                             ProcessedDate = reader.GetDateTime(4),
+                            IsEnabled = reader.GetBoolean(5)
                         });
                     }
                 }
@@ -203,6 +226,18 @@ namespace ESchoolBot
             }
         }
 
+        public void DisableUser(long chatId)
+        {
+            using (SqliteConnection connection = databaseAccessor.CreateConnection())
+            using (SqliteCommand command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE users SET is_enabled=FALSE WHERE chat_id=$chat_id;";
+                command.Parameters.AddWithValue("chat_id", chatId);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
         public class User
         {
             public long ChatId { get; set; }
@@ -210,6 +245,7 @@ namespace ESchoolBot
             public required string Password { get; set; }
             public required string SessionId { get; set; }
             public required DateTime ProcessedDate { get; set; }
+            public required bool IsEnabled { get; set; }
         }
     }
 }

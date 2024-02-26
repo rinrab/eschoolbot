@@ -6,5 +6,6 @@
         void UpdateSessionId(long chatId, string sessionId);
         void UpdateProcessedDate(long userId, DateTime date);
         List<DatabaseClient.User> ListUsers();
+        void DisableUser(long chatId);
     }
 }

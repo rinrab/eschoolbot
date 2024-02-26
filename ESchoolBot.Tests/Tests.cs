@@ -40,6 +40,11 @@ namespace ESchoolBot.Tests
             // Get users
             var list = databaseClient.ListUsers();
             Assert.AreEqual(123, list[0].ChatId);
+            Assert.AreEqual(true, list[0].IsEnabled);
+
+            databaseClient.DisableUser(123);
+
+            Assert.AreEqual(false, databaseClient.ListUsers()[0].IsEnabled);
         }
     }
 }

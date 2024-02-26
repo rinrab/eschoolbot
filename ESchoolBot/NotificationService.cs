@@ -51,6 +51,11 @@ namespace ESchoolBot
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
+            if (!user.IsEnabled)
+            {
+                return;
+            }
+
             StateResponse state = await InvokeESchoolClientAsync(
                 user,
                 async (sessionId, cancellationToken) =>

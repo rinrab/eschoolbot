@@ -54,6 +54,10 @@ namespace ESchoolBot
                             {
                                 await ProcessStartMessageAsync(chatId, cancellationToken);
                             }
+                            else if (messageText == "/off")
+                            {
+                                await ProcessDisableMessageAsync(chatId, cancellationToken);
+                            }
                             else
                             {
                                 await SendHelpMessageAsync(chatId, cancellationToken);
@@ -109,6 +113,14 @@ namespace ESchoolBot
         {
             await botClient.SendTextMessageAsync(chatId, Formatter.StartMessage,
                                                  replyMarkup: CreateLoginMarkup(),
+                                                 cancellationToken: cancellationToken);
+        }
+
+        private async Task ProcessDisableMessageAsync(long chatId, CancellationToken cancellationToken)
+        {
+            databaseClient.DisableUser(chatId);
+
+            await botClient.SendTextMessageAsync(chatId, Formatter.BotDisabled,
                                                  cancellationToken: cancellationToken);
         }
 

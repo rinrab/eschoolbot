@@ -17,6 +17,7 @@ namespace ESchoolBot
             Я буду присылать вам новые оценки с сайта eschool.center
             
             /start - старт/логин
+            /off - выключить бота
             """;
 
         public const string LoginRequired =
@@ -38,6 +39,11 @@ namespace ESchoolBot
         public const string NotFound = "Не найдено";
 
         private static readonly CultureInfo culture = new CultureInfo("en-GB");
+
+        public static string BotDisabled =
+            """
+            Вы отключили нотификации. Используйте комманду /start, чтобы перезапустить бота.
+            """;
 
         public static string FormatShortDate(DateTime date)
         {
