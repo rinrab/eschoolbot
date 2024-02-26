@@ -4,7 +4,7 @@ using Telegram.Bot;
 
 namespace ESchoolBot
 {
-    internal class Program
+    public class Program
     {
         private static void Main(string[] args)
         {
