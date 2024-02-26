@@ -35,12 +35,7 @@ namespace ESchoolBot
             {
                 services.Configure<Config>(context.Configuration.GetSection(Config.SectionName));
 
-                services.AddSingleton<IDatabaseAccessor, DatabaseAccessor>(serviceProvider =>
-                    {
-                        Config config = serviceProvider.GetService<IOptions<Config>>()!.Value;
-                        return new DatabaseAccessor(config.ConnectionString);
-                    });
-
+                services.AddSingleton<IDatabaseAccessor, DatabaseAccessor>();
                 services.AddSingleton<IDatabaseClient, DatabaseClient>();
                 services.AddSingleton<IESchoolAccessor, ESchoolAccessor>();
                 services.AddHostedService<TelegramService>();
