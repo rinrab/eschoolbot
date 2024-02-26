@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging.EventLog;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
 
@@ -12,6 +13,17 @@ namespace ESchoolBot
             builder.ConfigureHostConfiguration(builder =>
             {
                 builder.AddUserSecrets(typeof(Program).Assembly);
+            });
+
+            builder.ConfigureLogging(logging =>
+            {
+                logging.ClearProviders();
+                logging.AddConsole();
+                logging.AddEventLog(new EventLogSettings()
+                {
+                    LogName = "eschoolbot",
+                    SourceName = "eschoolbot",
+                });
             });
 
             builder.ConfigureServices((context, services) =>

@@ -14,3 +14,6 @@ dotnet_diagnostic.CA1859.severity = silent
 
 # Default severity for analyzer diagnostics with category 'Assertion'
 dotnet_analyzer_diagnostic.category-Assertion.severity = silent
+
+# CA1416: Validate platform compatibility
+dotnet_diagnostic.CA1416.severity = silent
