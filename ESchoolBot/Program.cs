@@ -15,6 +15,11 @@ namespace ESchoolBot
                 builder.AddUserSecrets(typeof(Program).Assembly);
             });
 
+            builder.UseWindowsService(options =>
+            {
+                options.ServiceName = "eschoolbot";
+            });
+
             builder.ConfigureLogging(logging =>
             {
                 logging.ClearProviders();
