@@ -32,7 +32,15 @@ namespace ESchoolBot.Tests
             IDatabaseClient databaseClient = new DatabaseClient(databaseAccessor);
 
             // Add user
-            databaseClient.InsertUser(123, "amogus_username", "amogus_password", "amogus_session");
+            databaseClient.InsertUser(new DatabaseClient.User
+            {
+                ChatId = 123,
+                Username = "amogus_username",
+                Password = "amogus_password",
+                SessionId = "amogus_session",
+                ProcessedDate = new DateTime(2020, 1, 4),
+                IsEnabled = true
+            });
 
             // Upgrade database again
             databaseClient = new DatabaseClient(databaseAccessor);

@@ -141,7 +141,7 @@ namespace ESchoolBot
             }
         }
 
-        public void InsertUser(long chatId, string username, string password, string sessionId)
+        public void InsertUser(User user)
         {
             using (SqliteConnection connection = databaseAccessor.CreateConnection())
             using (SqliteCommand command = connection.CreateCommand())
@@ -150,13 +150,14 @@ namespace ESchoolBot
                     """
                     INSERT OR REPLACE INTO
                         users (chat_id, username, password, session_id, processed_date, is_enabled)
-                        VALUES ($chat_id, $username, $password, $session_id, $processed_date, TRUE);
+                        VALUES ($chat_id, $username, $password, $session_id, $processed_date, $is_enabled);
                     """;
-                command.Parameters.AddWithValue("chat_id", chatId);
-                command.Parameters.AddWithValue("username", username);
-                command.Parameters.AddWithValue("password", password);
-                command.Parameters.AddWithValue("session_id", sessionId);
-                command.Parameters.AddWithValue("processed_date", Formatter.GetDate());
+                command.Parameters.AddWithValue("chat_id", user.ChatId);
+                command.Parameters.AddWithValue("username", user.Username);
+                command.Parameters.AddWithValue("password", user.Password);
+                command.Parameters.AddWithValue("session_id", user.SessionId);
+                command.Parameters.AddWithValue("processed_date", user.ProcessedDate);
+                command.Parameters.AddWithValue("is_enabled", user.IsEnabled);
 
                 command.ExecuteNonQuery();
             }
