@@ -73,7 +73,7 @@ namespace ESchoolBot
 
         public static DateTime GetDate()
         {
-            return DateTime.UtcNow.AddHours(3).Date;
+            return DateTime.UtcNow.AddHours(3);
         }
 
         private static readonly CultureInfo culture = new CultureInfo("ru-RU");
