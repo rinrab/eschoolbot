@@ -15,8 +15,8 @@ dotnet publish .\repos\ESchoolBot\ESchoolBot.csproj --output .\app\
 
 New-EventLog -LogName eschoolbot -Source eschoolbot
 
-Set-Content -Path "Update.xml" -Value '<?xml version="1.0" encoding="UTF-16"?>
-<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+Set-Content -Path "$eschoolbotpath\Update.xml" -Value "<?xml version='1.0' encoding='UTF-16'?>
+<Task version='1.2' xmlns='http://schemas.microsoft.com/windows/2004/02/mit/task'>
   <Triggers>
     <BootTrigger>
       <Enabled>true</Enabled>
@@ -26,7 +26,7 @@ Set-Content -Path "Update.xml" -Value '<?xml version="1.0" encoding="UTF-16"?>
     </RegistrationTrigger>
   </Triggers>
   <Principals>
-    <Principal id="Author">
+    <Principal id='Author'>
       <UserId>S-1-5-18</UserId>
       <RunLevel>HighestAvailable</RunLevel>
     </Principal>
@@ -50,18 +50,12 @@ Set-Content -Path "Update.xml" -Value '<?xml version="1.0" encoding="UTF-16"?>
     <ExecutionTimeLimit>PT72H</ExecutionTimeLimit>
     <Priority>7</Priority>
   </Settings>
-  <Actions Context="Author">
+  <Actions Context='Author'>
     <Exec>
       <Command>powershell.exe</Command>
-      <Arguments>-File "$eschoolbotpath\Update.ps1"</Arguments>
+      <Arguments>-Command `"cd 'C:\Program Files\eschoolbot\repos'; git pull; Stop-Service eschoolbot; dotnet publish .\ESchoolBot\ESchoolBot.csproj --output ..\app\; Start-Service eschoolbot`"</Arguments>
     </Exec>
   </Actions>
-</Task>'
+</Task>"
 
-Set-Content -Path "Update.ps1" -Value "cd $PSScriptRoot\repos
-git pull
-Stop-Service eschoolbot
-dotnet publish .\ESchoolBot\ESchoolBot.csproj --output ..\app\
-Start-Service eschoolbot"
-
-schtasks.exe /create /tn eschool_update /xml "$PSScriptRoot\eschool_update.xml"
+schtasks.exe /create /tn eschool_update /xml "$eschoolbotpath\Update.xml" /f
