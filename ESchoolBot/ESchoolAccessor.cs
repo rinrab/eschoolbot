@@ -27,7 +27,7 @@ namespace ESchoolBot
                 user,
                 async (sessionId, cancellationToken) =>
                 {
-                    return await eschoolClient.GetStateAsync(user.SessionId);
+                    return await eschoolClient.GetStateAsync(sessionId);
                 },
                 cancellationToken);
 
@@ -35,7 +35,7 @@ namespace ESchoolBot
                 user,
                 async (sessionId, cancellationToken) =>
                 {
-                    return await eschoolClient.GetGroupsAsync(user.SessionId, state.UserId);
+                    return await eschoolClient.GetGroupsAsync(sessionId, state.UserId);
                 },
                 cancellationToken);
 
@@ -43,7 +43,7 @@ namespace ESchoolBot
                 user,
                 async (sessionId, cancellationtoken) =>
                 {
-                    return await eschoolClient.GetPeriodsAsync(user.SessionId, groups.Last().GroupId);
+                    return await eschoolClient.GetPeriodsAsync(sessionId, groups.Last().GroupId);
                 },
                 cancellationToken);
 
@@ -53,7 +53,7 @@ namespace ESchoolBot
                 user,
                 async (sessionId, cancellationToken) =>
                 {
-                    return await eschoolClient.GetDiaryPeriodAsync(user.SessionId, state.UserId, periodId);
+                    return await eschoolClient.GetDiaryPeriodAsync(sessionId, state.UserId, periodId);
                 },
                 cancellationToken);
 
@@ -75,6 +75,14 @@ namespace ESchoolBot
                 logger.LogInformation("Updating SessionId for user {chatId}", user.ChatId);
 
                 string newToken = await eschoolClient.LoginAsync(user.Username, user.Password, cancellationToken);
+
+                logger.LogInformation(
+                    """
+                    Successfully updated session id for user {chatId}.
+                    From:   {oldSessionId}
+                    To:     {newSessionId}
+                    """,
+                    user.ChatId, user.SessionId, newToken);
 
                 databaseClient.UpdateSessionId(user.ChatId, newToken);
 
