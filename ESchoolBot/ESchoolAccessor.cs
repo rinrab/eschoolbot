@@ -72,22 +72,22 @@ namespace ESchoolBot
             }
             catch (LoginException)
             {
-                logger.LogInformation("Updating SessionId for user {chatId}", user.ChatId);
-
-                string newToken = await eschoolClient.LoginAsync(user.Username, user.Password, cancellationToken);
-
-                logger.LogInformation(
-                    """
-                    Successfully updated session id for user {chatId}.
-                    From:   {oldSessionId}
-                    To:     {newSessionId}
-                    """,
-                    user.ChatId, user.SessionId, newToken);
-
-                databaseClient.UpdateSessionId(user.ChatId, newToken);
-
                 try
                 {
+                    logger.LogInformation("Updating SessionId for user {chatId}", user.ChatId);
+
+                    string newToken = await eschoolClient.LoginAsync(user.Username, user.Password, cancellationToken);
+
+                    logger.LogInformation(
+                        """
+                        Successfully updated session id for user {chatId}.
+                        From:   {oldSessionId}
+                        To:     {newSessionId}
+                        """,
+                        user.ChatId, user.SessionId, newToken);
+
+                    databaseClient.UpdateSessionId(user.ChatId, newToken);
+
                     return await action(newToken, cancellationToken);
                 }
                 catch (LoginException)

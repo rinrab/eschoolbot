@@ -58,28 +58,34 @@ namespace ESchoolBot
 
         private async Task FetchUser(DatabaseClient.User user, CancellationToken stoppingToken)
         {
-            DiaryPeriod[] diaries = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
-
-            List<DiaryPeriod> filteredDiaries = [];
-
-            foreach (DiaryPeriod diary in diaries)
+            try
             {
-                if (diary.MarkDate.HasValue && diary.MarkDate.Value > user.ProcessedDate)
+                DiaryPeriod[] diaries = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
+
+                List<DiaryPeriod> filteredDiaries = [];
+
+                foreach (DiaryPeriod diary in diaries)
                 {
-                    filteredDiaries.Add(diary);
+                    if (diary.MarkDate.HasValue && diary.MarkDate.Value > user.ProcessedDate)
+                    {
+                        filteredDiaries.Add(diary);
+                    }
+                }
+
+                filteredDiaries.Sort(DiaryComparer);
+
+                foreach (DiaryPeriod diary in filteredDiaries)
+                {
+                    await botClient.SendTextMessageAsync(user.ChatId,
+                                                         Formatter.FormatNewDiaryMessage(diary),
+                                                         parseMode: ParseMode.Html,
+                                                         cancellationToken: stoppingToken);
+
+                    databaseClient.UpdateProcessedDate(user.ChatId, diary.MarkDate!.Value);
                 }
             }
-
-            filteredDiaries.Sort(DiaryComparer);
-
-            foreach (DiaryPeriod diary in filteredDiaries)
+            catch (LoginException)
             {
-                await botClient.SendTextMessageAsync(user.ChatId,
-                                                     Formatter.FormatNewDiaryMessage(diary),
-                                                     parseMode: ParseMode.Html,
-                                                     cancellationToken: stoppingToken);
-
-                databaseClient.UpdateProcessedDate(user.ChatId, diary.MarkDate!.Value);
             }
         }
 
