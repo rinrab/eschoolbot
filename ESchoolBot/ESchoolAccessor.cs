@@ -81,8 +81,8 @@ namespace ESchoolBot
                     logger.LogInformation(
                         """
                         Successfully updated session id for user {chatId}.
-                        From:   {oldSessionId}
-                        To:     {newSessionId}
+                        From: {oldSessionId}
+                        To: {newSessionId}
                         """,
                         user.ChatId, user.SessionId, newToken);
 
