@@ -31,13 +31,20 @@ namespace ESchoolBot.Tests
         [Test]
         public void FormatNewDiaryMessageTest()
         {
-            var actual = Formatter.FormatNewDiaryMessage(new DiaryPeriod
-            {
-                Subject = "Алгебра и начало анализа",
-                MarkValue = "5",
-                MarkWeight = 1.0f,
-                MarkDate = new DateTime(2023, 09, 02),
-            });
+            var actual = Formatter.FormatNewDiaryMessage(
+                new DiaryPeriod
+                {
+                    Subject = "Поперечность световых волн и электромагнитная теория света",
+                    MarkValue = "5",
+                    MarkWeight = 1.0f,
+                    MarkDate = new DateTime(2023, 09, 02),
+                },
+                new DiaryUnit
+                {
+                    UnitId = 1,
+                    UnitName = "Физика",
+                    Rating = null
+                });
 
             Assert.AreEqual(
                 """
