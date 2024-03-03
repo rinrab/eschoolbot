@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESchoolClient\ESchoolClient.csproj" />
+    <ProjectReference Include="..\ESchoolClient\ESchoolBot.Client.csproj" />
   </ItemGroup>
 
 </Project>
