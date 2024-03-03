@@ -1,4 +1,4 @@
-﻿using ESchoolClient;
+﻿using ESchoolBot.Client;
 using System.Globalization;
 
 namespace ESchoolBot

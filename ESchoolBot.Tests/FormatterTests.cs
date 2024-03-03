@@ -1,4 +1,4 @@
-﻿using ESchoolClient;
+﻿using ESchoolBot.Client;
 using NUnit.Framework;
 
 namespace ESchoolBot.Tests

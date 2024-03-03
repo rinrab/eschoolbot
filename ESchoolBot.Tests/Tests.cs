@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using ESchoolBot.Client;
+using NUnit.Framework;
 using System.Diagnostics;
 
 namespace ESchoolBot.Tests
@@ -10,7 +11,7 @@ namespace ESchoolBot.Tests
         {
             if (Debugger.IsAttached)
             {
-                ESchoolClient.ESchoolClient client = new ESchoolClient.ESchoolClient(new HttpClient());
+                ESchoolClient client = new ESchoolClient(new HttpClient());
                 await client.LoginAsync("<login>", "<password>", default);
             }
         }

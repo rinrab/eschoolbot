@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ESchoolClient
+namespace ESchoolBot.Client
 {
     public class DiaryPeriod
     {

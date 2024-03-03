@@ -1,4 +1,4 @@
-﻿namespace ESchoolClient
+﻿namespace ESchoolBot.Client
 {
     public class DiaryUnit
     {

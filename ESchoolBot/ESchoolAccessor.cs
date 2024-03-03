@@ -1,5 +1,5 @@
 ﻿
-using ESchoolClient;
+using ESchoolBot.Client;
 using Telegram.Bot;
 
 namespace ESchoolBot
