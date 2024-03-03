@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using ESchoolClient;
+using System.Globalization;
 
 namespace ESchoolBot
 {
@@ -59,15 +60,17 @@ namespace ESchoolBot
             return date.ToString("s", culture);
         }
 
-        public static string FormatNewDiaryMessage(DiaryPeriod diary)
+        public static string FormatNewDiaryMessage(DiaryPeriod diaryPeriod, DiaryUnit? diaryUnit)
         {
+            // TODO: Рейтинг: { diaryUnit?.Rating ?? NotFound}
+
             return
                 $"""
-                Новая оценка по <b>{diary.Subject}</b>
-                Оценка: {diary.MarkValue}
-                Коэффецент: {diary.MarkWeight:F1}
+                Новая оценка по <b>{diaryUnit?.UnitName ?? NotFound}</b>
+                Оценка: {diaryPeriod.MarkValue}
+                Коэффецент: {diaryPeriod.MarkWeight:F1}
 
-                <i>{FormatLongDate(diary.MarkDate!.Value)}</i>
+                <i>{FormatLongDate(diaryPeriod.MarkDate!.Value)}</i>
                 """;
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using ESchoolClient;
+using System.Net;
 using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
@@ -102,6 +103,12 @@ namespace ESchoolBot
         public async Task<DiaryPeriodResponse> GetDiaryPeriodAsync(string sessionId, int userId, int periodId)
         {
             return await GetRequestHelper<DiaryPeriodResponse>(sessionId, $"/ec-server/student/getDiaryPeriod/?userId={userId}&eiId={periodId}");
+        }
+
+        public async Task<DiaryUnitsResponse> GetDiaryUnitsAsync(string sessionId, int userId, int periodId)
+        {
+            return await GetRequestHelper<DiaryUnitsResponse>(sessionId,
+                $"/ec-server/student/getDiaryUnits/?userId={userId}&eiId={periodId}");
         }
 
         public async Task<GroupsResponse> GetGroupsAsync(string sessionId, int userId)

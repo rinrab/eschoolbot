@@ -13,5 +13,7 @@ namespace ESchoolBot
         public string? MarkValue { get; set; }
 
         public DateTime? MarkDate { get; set; }
+
+        public int UnitId { get; set; }
     }
 }

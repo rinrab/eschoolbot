@@ -61,11 +61,11 @@ namespace ESchoolBot
         {
             try
             {
-                DiaryPeriod[] diaries = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
+                FetchData fetchData = await eschoolAccessor.GetDiariesAsync(user, stoppingToken);
 
                 List<DiaryPeriod> filteredDiaries = [];
 
-                foreach (DiaryPeriod diary in diaries)
+                foreach (DiaryPeriod diary in fetchData.DiaryPeriods)
                 {
                     if (diary.MarkDate.HasValue && diary.MarkDate.Value > user.ProcessedDate)
                     {
@@ -77,8 +77,10 @@ namespace ESchoolBot
 
                 foreach (DiaryPeriod diary in filteredDiaries)
                 {
+                    var diaryUnit = fetchData.DiaryUnits.FirstOrDefault(a => a.UnitId == diary.UnitId);
+
                     await botClient.SendTextMessageAsync(user.ChatId,
-                                                         Formatter.FormatNewDiaryMessage(diary),
+                                                         Formatter.FormatNewDiaryMessage(diary, diaryUnit),
                                                          parseMode: ParseMode.Html,
                                                          cancellationToken: stoppingToken);
 
