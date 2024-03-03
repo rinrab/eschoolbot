@@ -51,6 +51,10 @@ namespace ESchoolBot
                         }
                     }
                 }
+                else
+                {
+                    logger.LogInformation("Fetch skipped because bot was disabled for night.");
+                }
 
                 await Task.Delay(TimeSpan.FromSeconds(fetchDelay), stoppingToken);
             }
