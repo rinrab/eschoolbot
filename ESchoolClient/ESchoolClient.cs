@@ -19,7 +19,16 @@ namespace ESchoolBot
 
         public async Task<string> LoginAsync(string email, string passwordHash, CancellationToken cancellationToken)
         {
-            Device device = new Device("web", "v.413", "eaBw24ID4Pz8UwK8nxfkwiW0aFnE9U56XJiA4GF1KtCXH6mKGzcVLDh08c1O2VjC", "Mozilla", 122, "Windows N", null);
+            Device device = new Device
+            {
+                cliType = "web",
+                cliVer = "v.413",
+                pushToken = "eaBw24ID4Pz8UwK8nxfkwiW0aFnE9U56XJiA4GF1KtCXH6mKGzcVLDh08c1O2VjC",
+                deviceName = "Mozilla",
+                deviceModel = 122,
+                cliOs = "Windows N",
+                cliOsVe = null
+            };
 
             string body = string.Format("username={0}&password={1}&device={2}",
                                         Uri.EscapeDataString(email),
@@ -121,12 +130,15 @@ namespace ESchoolBot
             return await GetRequestHelper<PeriodsResponse>(sessionId, $"/ec-server/dict/periods/0?groupId={groupId}");
         }
 
-        public record Device(string cliType,
-                             string cliVer,
-                             string? pushToken,
-                             string deviceName,
-                             int deviceModel,
-                             string cliOs,
-                             string? cliOsVer);
+        public class Device
+        {
+            public required string cliType { get; set; }
+            public required string cliVer { get; set; }
+            public required string? pushToken { get; set; }
+            public required string deviceName { get; set; }
+            public required int deviceModel { get; set; }
+            public required string cliOs { get; set; }
+            public required string? cliOsVe { get; set; }
+        };
     }
 }
