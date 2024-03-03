@@ -19,7 +19,7 @@ namespace ESchoolBot
 
         public async Task<string> LoginAsync(string email, string passwordHash, CancellationToken cancellationToken)
         {
-            Device device = new Device
+            DeviceInfo device = new DeviceInfo
             {
                 CliType = "web",
                 CliVersion = "v.413",

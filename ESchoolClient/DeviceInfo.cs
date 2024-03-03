@@ -2,7 +2,7 @@
 
 namespace ESchoolBot
 {
-    public class Device
+    public class DeviceInfo
     {
         [JsonPropertyName("cliType")]
         public required string CliType { get; set; }
