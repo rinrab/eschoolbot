@@ -4,7 +4,6 @@ using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace ESchoolBot
@@ -130,29 +129,5 @@ namespace ESchoolBot
         {
             return await GetRequestHelper<PeriodsResponse>(sessionId, $"/ec-server/dict/periods/0?groupId={groupId}");
         }
-
-        public class Device
-        {
-            [JsonPropertyName("cliType")]
-            public required string CliType { get; set; }
-
-            [JsonPropertyName("cliVer")]
-            public required string CliVersion { get; set; }
-
-            [JsonPropertyName("pushToken")]
-            public required string? PushToken { get; set; }
-
-            [JsonPropertyName("deviceName")]
-            public required string DeviceName { get; set; }
-
-            [JsonPropertyName("deviceModel")]
-            public required int DeviceModel { get; set; }
-
-            [JsonPropertyName("cliOs")]
-            public required string CliOperatingSystem { get; set; }
-
-            [JsonPropertyName("cliOsVe")]
-            public required string? CliOperatingSystemVersion { get; set; }
-        };
     }
 }
