@@ -4,6 +4,7 @@ using System.Net.Http.Json;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace ESchoolBot
@@ -21,13 +22,13 @@ namespace ESchoolBot
         {
             Device device = new Device
             {
-                cliType = "web",
-                cliVer = "v.413",
-                pushToken = "eaBw24ID4Pz8UwK8nxfkwiW0aFnE9U56XJiA4GF1KtCXH6mKGzcVLDh08c1O2VjC",
-                deviceName = "Mozilla",
-                deviceModel = 122,
-                cliOs = "Windows N",
-                cliOsVe = null
+                CliType = "web",
+                CliVersion = "v.413",
+                PushToken = "eaBw24ID4Pz8UwK8nxfkwiW0aFnE9U56XJiA4GF1KtCXH6mKGzcVLDh08c1O2VjC",
+                DeviceName = "Mozilla",
+                DeviceModel = 122,
+                CliOperatingSystem = "Windows N",
+                CliOperatingSystemVersion = null
             };
 
             string body = string.Format("username={0}&password={1}&device={2}",
@@ -132,13 +133,26 @@ namespace ESchoolBot
 
         public class Device
         {
-            public required string cliType { get; set; }
-            public required string cliVer { get; set; }
-            public required string? pushToken { get; set; }
-            public required string deviceName { get; set; }
-            public required int deviceModel { get; set; }
-            public required string cliOs { get; set; }
-            public required string? cliOsVe { get; set; }
+            [JsonPropertyName("cliType")]
+            public required string CliType { get; set; }
+
+            [JsonPropertyName("cliVer")]
+            public required string CliVersion { get; set; }
+
+            [JsonPropertyName("pushToken")]
+            public required string? PushToken { get; set; }
+
+            [JsonPropertyName("deviceName")]
+            public required string DeviceName { get; set; }
+
+            [JsonPropertyName("deviceModel")]
+            public required int DeviceModel { get; set; }
+
+            [JsonPropertyName("cliOs")]
+            public required string CliOperatingSystem { get; set; }
+
+            [JsonPropertyName("cliOsVe")]
+            public required string? CliOperatingSystemVersion { get; set; }
         };
     }
 }
