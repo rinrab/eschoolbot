@@ -32,20 +32,21 @@ namespace ESchoolBot
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                List<DatabaseClient.User> users = databaseClient.ListUsers();
-
-                foreach (DatabaseClient.User user in users)
+                if (Formatter.GetDate().TimeOfDay.Hours > 7)
                 {
-                    if (user.IsEnabled)
+                    foreach (DatabaseClient.User user in databaseClient.ListUsers())
                     {
-                        try
+                        if (user.IsEnabled)
                         {
-                            logger.LogInformation("Fetching user {userId}", user.ChatId);
-                            await FetchUser(user, stoppingToken);
-                        }
-                        catch (Exception ex)
-                        {
-                            logger.LogError(ex, "Error while processing fetch for user {userId}", user.ChatId);
+                            try
+                            {
+                                logger.LogInformation("Fetching user {userId}", user.ChatId);
+                                await FetchUser(user, stoppingToken);
+                            }
+                            catch (Exception ex)
+                            {
+                                logger.LogError(ex, "Error while processing fetch for user {userId}", user.ChatId);
+                            }
                         }
                     }
                 }
