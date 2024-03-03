@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using ESchoolClient;
+using NUnit.Framework;
 
 namespace ESchoolBot.Tests
 {

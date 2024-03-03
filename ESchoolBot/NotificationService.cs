@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using ESchoolClient;
+using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 

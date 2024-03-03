@@ -1,4 +1,4 @@
-﻿namespace ESchoolBot
+﻿namespace ESchoolClient
 {
     public class DiaryPeriodResponse
     {

@@ -1,4 +1,4 @@
-﻿namespace ESchoolBot
+﻿namespace ESchoolClient
 {
     [Serializable]
     public class LoginException : Exception

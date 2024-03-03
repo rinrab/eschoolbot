@@ -1,7 +1,7 @@
 ﻿
 using ESchoolClient;
 
-namespace ESchoolBot
+namespace ESchoolClient
 {
     public interface IESchoolClient
     {

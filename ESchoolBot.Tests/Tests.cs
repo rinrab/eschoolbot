@@ -10,7 +10,7 @@ namespace ESchoolBot.Tests
         {
             if (Debugger.IsAttached)
             {
-                ESchoolClient client = new ESchoolClient(new HttpClient());
+                ESchoolClient.ESchoolClient client = new ESchoolClient.ESchoolClient(new HttpClient());
                 await client.LoginAsync("<login>", "<password>", default);
             }
         }

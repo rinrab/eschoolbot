@@ -1,3 +1,4 @@
+using ESchoolClient;
 using Microsoft.Extensions.Logging.EventLog;
 using Microsoft.Extensions.Options;
 using Telegram.Bot;
@@ -51,8 +52,8 @@ namespace ESchoolBot
 
                 services.AddHttpClient("eschool_client")
                     .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler() { UseCookies = false })
-                    .ConfigureHttpClient(httpClient => ESchoolClient.ConfigureDefaultHttpClient(httpClient))
-                    .AddTypedClient<IESchoolClient>(httpClient => new ESchoolClient(httpClient));
+                    .ConfigureHttpClient(httpClient => ESchoolClient.ESchoolClient.ConfigureDefaultHttpClient(httpClient))
+                    .AddTypedClient<IESchoolClient>(httpClient => new ESchoolClient.ESchoolClient(httpClient));
             });
 
             IHost app = builder.Build();

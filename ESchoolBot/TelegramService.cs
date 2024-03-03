@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using ESchoolClient;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -132,7 +133,7 @@ namespace ESchoolBot
             {
                 try
                 {
-                    string passwordHash = ESchoolClient.ComputeHash(parsed.Password);
+                    string passwordHash = ESchoolClient.ESchoolClient.ComputeHash(parsed.Password);
 
                     string sessionId = await client.LoginAsync(parsed.Email, passwordHash, cancellationToken);
 

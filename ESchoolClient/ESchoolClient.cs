@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace ESchoolBot
+namespace ESchoolClient
 {
     public class ESchoolClient : IESchoolClient
     {
