@@ -131,7 +131,7 @@ namespace ESchoolBot
                         command.ExecuteNonQuery();
                     }
                 }
-                
+
                 if (GetVersion() < 7)
                 {
                     using (SqliteCommand command = connection.CreateCommand())
