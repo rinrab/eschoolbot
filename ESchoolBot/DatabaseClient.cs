@@ -140,7 +140,7 @@ namespace ESchoolBot
                         """
                         UPDATE users SET is_enabled=TRUE;
                         
-                        UPDATE schema SET version=6;
+                        UPDATE schema SET version=7;
                         """;
 
                         command.ExecuteNonQuery();
