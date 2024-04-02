@@ -4,7 +4,7 @@ namespace ESchoolBot
 {
     public class DatabaseClient : IDatabaseClient
     {
-        private readonly ILogger<DatabaseClient> logger;
+        private readonly ILogger<DatabaseClient>? logger;
         private readonly IDatabaseAccessor databaseAccessor;
 
         public DatabaseClient(ILogger<DatabaseClient>? logger, IDatabaseAccessor databaseAccessor)
@@ -12,9 +12,9 @@ namespace ESchoolBot
             this.logger = logger;
             this.databaseAccessor = databaseAccessor;
 
-            logger?.LogInformation("Initializing database...");
+            this.logger?.LogInformation("Initializing database...");
             Upgrade();
-            logger?.LogInformation("Database initialized successfully.");
+            this.logger?.LogInformation("Database initialized successfully.");
         }
 
         private void Upgrade()
