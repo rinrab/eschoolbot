@@ -9,7 +9,7 @@ namespace ESchoolBot.Tests
         {
             using (var sb = new DatabaseSandbox())
             {
-                DatabaseClient databaseClient = new DatabaseClient(sb.DatabaseAccessor);
+                DatabaseClient databaseClient = new DatabaseClient(null, sb.DatabaseAccessor);
 
                 Assert.AreNotEqual(databaseClient.GetVersion(), 0);
             }
@@ -20,7 +20,7 @@ namespace ESchoolBot.Tests
         {
             using (var sb = new DatabaseSandbox())
             {
-                DatabaseClient databaseClient = new DatabaseClient(sb.DatabaseAccessor);
+                DatabaseClient databaseClient = new DatabaseClient(null, sb.DatabaseAccessor);
 
                 databaseClient.InsertUser(new DatabaseClient.User
                 {
@@ -54,7 +54,7 @@ namespace ESchoolBot.Tests
         {
             using (var sb = new DatabaseSandbox())
             {
-                DatabaseClient databaseClient = new DatabaseClient(sb.DatabaseAccessor);
+                DatabaseClient databaseClient = new DatabaseClient(null, sb.DatabaseAccessor);
 
                 databaseClient.InsertUser(new DatabaseClient.User
                 {
@@ -107,7 +107,7 @@ namespace ESchoolBot.Tests
         {
             using (var sb = new DatabaseSandbox())
             {
-                DatabaseClient databaseClient = new DatabaseClient(sb.DatabaseAccessor);
+                DatabaseClient databaseClient = new DatabaseClient(null, sb.DatabaseAccessor);
 
                 databaseClient.InsertUser(new DatabaseClient.User
                 {
@@ -143,7 +143,7 @@ namespace ESchoolBot.Tests
         {
             using (var sb = new DatabaseSandbox())
             {
-                DatabaseClient databaseClient = new DatabaseClient(sb.DatabaseAccessor);
+                DatabaseClient databaseClient = new DatabaseClient(null, sb.DatabaseAccessor);
 
                 databaseClient.InsertUser(new DatabaseClient.User
                 {
