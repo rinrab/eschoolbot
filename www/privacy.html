@@ -36,6 +36,13 @@
             Мы уважаем ваши права на приватность в интернете!!!
         </p>
     </main>
+    <script>
+        Telegram.WebApp.MainButton.setParams({
+            text: 'Назад'
+        });
+        Telegram.WebApp.MainButton.show();
+        Telegram.WebApp.MainButton.onClick(() => history.back());
+    </script>
 </body>
 
 </html>
