@@ -68,7 +68,7 @@ namespace ESchoolBot
                 $"""
                 Новая оценка по <b>{diaryUnit?.UnitName ?? NotFound}</b>
                 Оценка: {diaryPeriod.MarkValue}
-                Коэффецент: {diaryPeriod.MarkWeight:F1}
+                Коэффициент: {diaryPeriod.MarkWeight:F1}
 
                 <i>{FormatLongDate(diaryPeriod.MarkDate!.Value)}</i>
                 """;
