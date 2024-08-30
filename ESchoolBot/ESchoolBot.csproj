@@ -18,4 +18,8 @@
     <ProjectReference Include="..\ESchoolBot.Client\ESchoolBot.Client.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+      <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
 </Project>
