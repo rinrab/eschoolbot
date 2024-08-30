@@ -13,7 +13,7 @@ jobs:
 
       - run: dotnet publish .\ESchoolBot\ESchoolBot.csproj --output .\app\ --self-contained
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
-          path: app
+          name: app
+          path: ${{ github.workspace }}/app
