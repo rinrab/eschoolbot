@@ -16,13 +16,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - run: dotnet publish .\repos\ESchoolBot\ESchoolBot.csproj --output .\app\
+      - run: dotnet publish .\ESchoolBot\ESchoolBot.csproj --output .\app\
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
