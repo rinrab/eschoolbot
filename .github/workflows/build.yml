@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - run: dotnet publish .\ESchoolBot\ESchoolBot.csproj --output .\app\
+      - run: dotnet publish .\ESchoolBot\ESchoolBot.csproj --output .\app\ --self-contained
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
