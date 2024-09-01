@@ -12,7 +12,8 @@ namespace ESchoolBot
             this.logger = logger;
             this.databaseAccessor = databaseAccessor;
 
-            this.logger?.LogInformation("Initializing database...");
+            this.logger?.LogInformation("Initializing database... Connection string: '{ConnectionString}'",
+                                        databaseAccessor.ConnectionString);
             Upgrade();
             this.logger?.LogInformation("Database initialized successfully.");
         }

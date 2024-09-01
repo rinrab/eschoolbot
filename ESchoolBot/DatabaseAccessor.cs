@@ -5,21 +5,21 @@ namespace ESchoolBot
 {
     public class DatabaseAccessor : IDatabaseAccessor
     {
-        private readonly string connectionString;
+        public string ConnectionString { get; }
 
         public DatabaseAccessor(IOptions<Config> options)
         {
-            connectionString = options.Value.ConnectionString;
+            ConnectionString = options.Value.ConnectionString;
         }
 
         public DatabaseAccessor(string connectionString)
         {
-            this.connectionString = connectionString;
+            ConnectionString = connectionString;
         }
 
         public SqliteConnection CreateConnection()
         {
-            var connection = new SqliteConnection(connectionString);
+            var connection = new SqliteConnection(ConnectionString);
             connection.Open();
             return connection;
         }
