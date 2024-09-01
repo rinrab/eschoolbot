@@ -20,7 +20,7 @@
 
   <PropertyGroup>
       <PublishSingleFile>true</PublishSingleFile>
-      <PublishTrimmed>true</PublishTrimmed>
+      <PublishTrimmed>false</PublishTrimmed>
   </PropertyGroup>
 
 </Project>
