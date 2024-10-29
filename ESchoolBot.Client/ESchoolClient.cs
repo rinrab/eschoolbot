@@ -22,7 +22,7 @@ namespace ESchoolBot.Client
             {
                 CliType = "web",
                 CliVersion = "v.413",
-                PushToken = "eaBw24ID4Pz8UwK8nxfkwiW0aFnE9U56XJiA4GF1KtCXH6mKGzcVLDh08c1O2VjC",
+                PushToken = "neLb2c8Xwyxjr4yHpX6qeEjqdQ2jo4U7mFhknUrMjOXqGWc1dVZaqfHgEKzoxwK5",
                 DeviceName = "Mozilla",
                 DeviceModel = 122,
                 CliOperatingSystem = "Windows N",
